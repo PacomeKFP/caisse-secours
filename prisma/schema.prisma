@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id               String   @id @default(cuid())
+  matricule        String   @unique
+  nom              String
+  telephone        String
+  solde            Float    @default(0)
+  dateCreation     DateTime @default(now())
+  dateModification DateTime @updatedAt
+
+  transactions Transaction[]
+  commissions  Commission[]
+
+  @@map("clients")
+}
+
+model Transaction {
+  id               String          @id @default(cuid())
+  montant          Float
+  type             TransactionType
+  raison           String?
+  dateCreation     DateTime        @default(now())
+  dateModification DateTime        @updatedAt
+  clientId         String
+  client           Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([dateCreation])
+  @@index([type])
+  @@map("transactions")
+}
+
+model Commission {
+  id                 String   @id @default(cuid())
+  montantTotal       Float
+  montantCommission  Float
+  label              String
+  dateCreation       DateTime @default(now())
+  dateModification   DateTime @updatedAt
+  mois               Int
+  annee              Int
+  clientId           String
+  client             Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@unique([clientId, mois, annee])
+  @@index([mois, annee])
+  @@map("commissions")
+}
+
+enum TransactionType {
+  DEPOT
+  RETRAIT
+}
