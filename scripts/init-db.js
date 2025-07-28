@@ -24,7 +24,7 @@ try {
   
   // Run seed
   console.log('🌱 Seeding database...')
-  execSync('npx tsx src/lib/db/seed.ts', { stdio: 'inherit' })
+ // execSync('npx tsx src/lib/db/seed.ts', { stdio: 'inherit' })
   
   console.log('✅ Database initialization complete!')
   console.log('')
