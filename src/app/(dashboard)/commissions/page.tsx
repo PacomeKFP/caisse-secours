@@ -551,13 +551,13 @@ export default function CommissionsPage() {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-purple-200/50 shadow-sm">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                <thead className="bg-gradient-to-r from-purple-50 to-purple-100 border-b-2 border-purple-300">
                   <tr>
                     <th 
                       onClick={() => handleSort('createdAt')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-purple-900 cursor-pointer hover:bg-purple-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Date
@@ -566,7 +566,7 @@ export default function CommissionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('clientNom')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-purple-900 cursor-pointer hover:bg-purple-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Client
@@ -575,7 +575,7 @@ export default function CommissionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('moisAnnee')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-purple-900 cursor-pointer hover:bg-purple-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Mois
@@ -584,7 +584,7 @@ export default function CommissionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('montantTotal')}
-                      className="text-right py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-right py-4 px-6 font-semibold text-purple-900 cursor-pointer hover:bg-purple-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center justify-end gap-2">
                         Solde Base
@@ -593,7 +593,7 @@ export default function CommissionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('commission')}
-                      className="text-right py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-right py-4 px-6 font-semibold text-purple-900 cursor-pointer hover:bg-purple-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center justify-end gap-2">
                         Commission
@@ -628,7 +628,7 @@ export default function CommissionsPage() {
                         </span>
                       </td>
                       <td className="py-4 px-6 text-sm text-right">
-                        <span className="font-bold text-green-600 bg-green-50 px-3 py-1 rounded-lg shadow-sm">
+                        <span className="font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-lg shadow-sm">
                           {formatCurrency(commission.commission)}
                         </span>
                       </td>

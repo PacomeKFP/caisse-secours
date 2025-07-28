@@ -462,13 +462,13 @@ export default function TransactionsPage() {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-gold-200/50 shadow-sm">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                <thead className="bg-gradient-to-r from-gold-50 to-yellow-100 border-b-2 border-gold-300">
                   <tr>
                     <th 
                       onClick={() => handleSort('createdAt')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-gold-900 cursor-pointer hover:bg-gold-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Date
@@ -477,7 +477,7 @@ export default function TransactionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('clientNom')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-gold-900 cursor-pointer hover:bg-gold-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Client
@@ -486,7 +486,7 @@ export default function TransactionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('type')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-gold-900 cursor-pointer hover:bg-gold-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Type
@@ -495,7 +495,7 @@ export default function TransactionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('montant')}
-                      className="text-right py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-right py-4 px-6 font-semibold text-gold-900 cursor-pointer hover:bg-gold-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center justify-end gap-2">
                         Montant
@@ -504,15 +504,15 @@ export default function TransactionsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('sourceDestination')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-gold-900 cursor-pointer hover:bg-gold-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Source/Destination
                         <SortIcon field="sourceDestination" />
                       </div>
                     </th>
-                    <th className="text-left py-4 px-6 font-semibold text-gray-900">Description</th>
-                    <th className="text-center py-4 px-6 font-semibold text-gray-900">Actions</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gold-900">Description</th>
+                    <th className="text-center py-4 px-6 font-semibold text-gold-900">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">

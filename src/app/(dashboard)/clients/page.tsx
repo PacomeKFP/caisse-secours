@@ -391,13 +391,13 @@ export default function ClientsPage() {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-blue-200/50 shadow-sm">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                <thead className="bg-gradient-to-r from-blue-50 to-blue-100 border-b-2 border-blue-300">
                   <tr>
                     <th 
                       onClick={() => handleSort('matricule')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Matricule
@@ -406,7 +406,7 @@ export default function ClientsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('nom')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Nom
@@ -415,7 +415,7 @@ export default function ClientsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('telephone')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Téléphone
@@ -424,7 +424,7 @@ export default function ClientsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('totalDepots')}
-                      className="text-right py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-right py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center justify-end gap-2">
                         Total Dépôts
@@ -433,7 +433,7 @@ export default function ClientsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('totalRetraits')}
-                      className="text-right py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-right py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center justify-end gap-2">
                         Total Retraits
@@ -442,7 +442,7 @@ export default function ClientsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('solde')}
-                      className="text-right py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-right py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center justify-end gap-2">
                         Solde
@@ -451,31 +451,32 @@ export default function ClientsPage() {
                     </th>
                     <th 
                       onClick={() => handleSort('createdAt')}
-                      className="text-left py-4 px-6 font-semibold text-gray-900 cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                      className="text-left py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
                         Date création
                         <SortIcon field="createdAt" />
                       </div>
                     </th>
-                    <th className="text-center py-4 px-6 font-semibold text-gray-900">Actions</th>
+                    <th className="text-center py-4 px-6 font-semibold text-blue-900">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {paginatedClients.map((client, index) => (
-                    <tr key={client.id} className={`hover:bg-gradient-to-r hover:from-gold-50 hover:to-yellow-50 transition-all duration-200 ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
-                    }`}>
+                    <tr 
+                      key={client.id} 
+                      onClick={() => window.location.href = `/clients/${client.matricule}`}
+                      className={`hover:bg-gradient-to-r hover:from-gold-50 hover:to-yellow-50 transition-all duration-200 cursor-pointer ${
+                        index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
+                      }`}
+                    >
                       <td className="py-4 px-6 text-sm font-mono font-medium text-gray-900 border-l-2 border-transparent hover:border-gold-400">
                         {client.matricule}
                       </td>
                       <td className="py-4 px-6 text-sm text-gray-900">
-                        <Link 
-                          href={`/client/${client.id}`}
-                          className="font-semibold text-gold-600 hover:text-gold-700 hover:underline transition-colors"
-                        >
+                        <span className="font-semibold text-gold-600">
                           {client.nom}
-                        </Link>
+                        </span>
                       </td>
                       <td className="py-4 px-6 text-sm text-gray-600 font-mono">
                         {client.telephone}
@@ -503,7 +504,10 @@ export default function ClientsPage() {
                         {formatDate(client.createdAt)}
                       </td>
                       <td className="py-4 px-6">
-                        <div className="flex items-center justify-center gap-1">
+                        <div 
+                          className="flex items-center justify-center gap-1"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <button
                             onClick={() => handleEditClient(client)}
                             className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded-lg transition-all duration-200 transform hover:scale-105"
