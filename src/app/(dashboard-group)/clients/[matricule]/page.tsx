@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, User, Phone, CreditCard, TrendingUp, TrendingDown, Calendar, Search, Filter, ChevronDown, ChevronUp } from 'lucide-react'
 import { toast } from 'sonner'
+import ExportButton from '@/components/ExportButton'
 
 interface Client {
   id: string
@@ -336,18 +337,25 @@ export default function ClientProfilePage() {
             <h3 className="text-lg font-semibold text-gray-900">
               {activeTab === 'transactions' ? 'Filtrer les transactions' : 'Filtrer les commissions'}
             </h3>
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition-all duration-200 ${
-                showFilters 
-                  ? 'bg-gold-50 border-gold-300 text-gold-700 shadow-md' 
-                  : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:shadow-sm'
-              }`}
-            >
-              <Filter size={16} />
-              {showFilters ? 'Masquer les filtres' : 'Afficher les filtres'}
-              {showFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            </button>
+            <div className="flex items-center gap-2">
+              <ExportButton 
+                data={activeTab === 'transactions' ? filteredTransactions : filteredCommissions} 
+                filename={`${client?.nom.replace(/\s+/g, '_')}_${activeTab}`} 
+                type={activeTab as 'transactions' | 'commissions'}
+                disabled={loading}
+              />
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition-all duration-200 ${
+                  showFilters 
+                    ? 'bg-gold-50 border-gold-300 text-gold-700 shadow-md' 
+                    : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:shadow-sm'
+                }`}
+              >
+                <Filter size={16} />
+                {showFilters ? 'Masquer les filtres' : 'Afficher les filtres'}
+              </button>
+            </div>
           </div>
 
           {showFilters && (

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Plus, Search, Filter, Download, Trash2, Upload, Calendar, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import { toast } from 'sonner'
 import TransactionModal from '@/components/TransactionModal'
+import ExportButton from '@/components/ExportButton'
 
 interface Transaction {
   id: string
@@ -28,6 +29,8 @@ export default function TransactionsPage() {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [sourceFilter, setSourceFilter] = useState('')
+  const [montantMin, setMontantMin] = useState('')
+  const [montantMax, setMontantMax] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -51,8 +54,11 @@ export default function TransactionsPage() {
     const transactionDate = new Date(transaction.createdAt)
     const matchesStartDate = startDate === '' || transactionDate >= new Date(startDate)
     const matchesEndDate = endDate === '' || transactionDate <= new Date(endDate + 'T23:59:59')
+    
+    const matchesMontantMin = montantMin === '' || transaction.montant >= parseFloat(montantMin)
+    const matchesMontantMax = montantMax === '' || transaction.montant <= parseFloat(montantMax)
 
-    return matchesSearch && matchesType && matchesSource && matchesStartDate && matchesEndDate
+    return matchesSearch && matchesType && matchesSource && matchesStartDate && matchesEndDate && matchesMontantMin && matchesMontantMax
   })
 
   const sortedTransactions = filteredTransactions.sort((a, b) => {
@@ -167,6 +173,8 @@ export default function TransactionsPage() {
     setStartDate('')
     setEndDate('')
     setSourceFilter('')
+    setMontantMin('')
+    setMontantMax('')
     setTypeFilter('all')
     setSearchTerm('')
     setCurrentPage(1)
@@ -357,6 +365,12 @@ export default function TransactionsPage() {
                 {uploading ? 'Import...' : 'Import JSON'}
               </label>
             </div>
+            <ExportButton 
+              data={filteredTransactions} 
+              filename="transactions" 
+              type="transactions"
+              disabled={loading}
+            />
           </div>
         </div>
 
@@ -389,6 +403,34 @@ export default function TransactionsPage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
                   value={sourceFilter}
                   onChange={(e) => setSourceFilter(e.target.value)}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Montant minimum (FCFA)
+                </label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  min="0"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
+                  value={montantMin}
+                  onChange={(e) => setMontantMin(e.target.value)}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Montant maximum (FCFA)
+                </label>
+                <input
+                  type="number"
+                  placeholder="1000000"
+                  min="0"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
+                  value={montantMax}
+                  onChange={(e) => setMontantMax(e.target.value)}
                 />
               </div>
               

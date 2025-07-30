@@ -66,7 +66,7 @@ export class DashboardService {
       const soldeTotalResult = await db
         .select({ 
           total: sql<number>`COALESCE(
-            (SELECT SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END) FROM ${transactions}), 
+            (SELECT SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END) FROM transactions), 
             0
           )` 
         })
@@ -76,7 +76,7 @@ export class DashboardService {
       const transactionsMonthResult = await db
         .select({
           type: transactions.type,
-          total: sql<number>`COALESCE(SUM(${transactions.montant}), 0)`
+          total: sql<number>`COALESCE(SUM(montant), 0)`
         })
         .from(transactions)
         .where(and(
@@ -87,24 +87,24 @@ export class DashboardService {
 
       // Commissions last month
       const commissionsLastMonthResult = await db
-        .select({ total: sql<number>`COALESCE(SUM(${commissions.commission}), 0)` })
+        .select({ total: sql<number>`COALESCE(SUM(commission), 0)` })
         .from(commissions)
         .where(eq(commissions.moisAnnee, lastMonthStr))
 
-      // Process results
-      const totalClients = totalClientsResult[0]?.count || 0
-      const nouveauxClients = nouveauxClientsResult[0]?.count || 0
-      const soldeTotal = soldeTotalResult[0]?.total || 0
-      const commissionsLastMonth = commissionsLastMonthResult[0]?.total || 0
+      // Process results - ensure numeric conversion
+      const totalClients = Number(totalClientsResult[0]?.count) || 0
+      const nouveauxClients = Number(nouveauxClientsResult[0]?.count) || 0
+      const soldeTotal = Number(soldeTotalResult[0]?.total) || 0
+      const commissionsLastMonth = Number(commissionsLastMonthResult[0]?.total) || 0
 
       let depotsMonth = 0
       let retraitsMonth = 0
 
       transactionsMonthResult.forEach(result => {
         if (result.type === 'depot') {
-          depotsMonth = result.total
+          depotsMonth = Number(result.total) || 0
         } else if (result.type === 'retrait') {
-          retraitsMonth = result.total
+          retraitsMonth = Number(result.total) || 0
         }
       })
 
@@ -141,7 +141,7 @@ export class DashboardService {
       return result.map(row => ({
         id: row.id,
         type: row.type,
-        montant: row.montant,
+        montant: Number(row.montant) || 0,
         clientNom: row.clientNom || 'Client supprimé',
         clientMatricule: row.clientMatricule || 'N/A',
         createdAt: row.createdAt
@@ -162,8 +162,8 @@ export class DashboardService {
           matricule: clients.matricule,
           solde: sql<number>`COALESCE(
             (SELECT SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END) 
-             FROM ${transactions} 
-             WHERE ${transactions.clientId} = ${clients.id}), 
+             FROM transactions 
+             WHERE client_id = clients.id), 
             0
           )`
         })
@@ -175,7 +175,10 @@ export class DashboardService {
         .sort((a, b) => b.solde - a.solde)
         .slice(0, limit)
 
-      return topClients
+      return topClients.map(client => ({
+        ...client,
+        solde: Number(client.solde) || 0
+      }))
     } catch (error) {
       console.error('Error fetching top clients:', error)
       throw new Error('Failed to fetch top clients')
@@ -200,7 +203,7 @@ export class DashboardService {
         const dayTransactions = await db
           .select({
             type: transactions.type,
-            total: sql<number>`COALESCE(SUM(${transactions.montant}), 0)`
+            total: sql<number>`COALESCE(SUM(montant), 0)`
           })
           .from(transactions)
           .where(and(
@@ -214,9 +217,9 @@ export class DashboardService {
 
         dayTransactions.forEach(transaction => {
           if (transaction.type === 'depot') {
-            depots = transaction.total
+            depots = Number(transaction.total) || 0
           } else if (transaction.type === 'retrait') {
-            retraits = transaction.total
+            retraits = Number(transaction.total) || 0
           }
         })
 
@@ -239,8 +242,8 @@ export class DashboardService {
       const stats = await db
         .select({
           moisAnnee: commissions.moisAnnee,
-          totalCommission: sql<number>`SUM(${commissions.commission})`,
-          nombreClients: sql<number>`COUNT(DISTINCT ${commissions.clientId})`
+          totalCommission: sql<number>`SUM(commission)`,
+          nombreClients: sql<number>`COUNT(DISTINCT client_id)`
         })
         .from(commissions)
         .groupBy(commissions.moisAnnee)

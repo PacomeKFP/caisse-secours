@@ -128,26 +128,31 @@ export class CommissionService {
           matricule: clients.matricule,
           solde: sql<number>`COALESCE(
             (SELECT SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END) 
-             FROM ${transactions} 
-             WHERE ${transactions.clientId} = ${clients.id}), 
+             FROM transactions 
+             WHERE client_id = clients.id), 
             0
           )`
         })
         .from(clients)
-        .having(sql`solde > 0`)
+        .where(sql`(
+          SELECT COALESCE(SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END), 0) 
+          FROM transactions 
+          WHERE client_id = clients.id
+        ) > 0`)
 
       const calculations: CommissionCalculation[] = []
 
       for (const client of clientList) {
-        const calculation = this.calculateCommission(client.solde, config)
+        const solde = Number(client.solde) || 0
+        const calculation = this.calculateCommission(solde, config)
         
         if (calculation.commission > 0) {
           calculations.push({
             clientId: client.id,
             nom: client.nom,
             matricule: client.matricule,
-            soldeBase: client.solde,
-            commission: calculation.commission,
+            soldeBase: solde,
+            commission: Number(calculation.commission) || 0,
             tranche: calculation.tranche
           })
         }
@@ -259,7 +264,11 @@ export class CommissionService {
         .limit(limit)
         .offset(offset)
 
-      return result
+      return result.map(row => ({
+        ...row,
+        montantTotal: Number(row.montantTotal) || 0,
+        commission: Number(row.commission) || 0
+      }))
     } catch (error) {
       console.error('Error fetching commission history:', error)
       throw new Error('Failed to fetch commission history')

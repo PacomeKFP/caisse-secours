@@ -46,5 +46,5 @@ export function validatePhoneNumber(phone: string): boolean {
 
 export function generateMatriculeNumber(lastNumber: number): string {
   const nextNumber = lastNumber + 1
-  return `CLT${nextNumber.toString().padStart(3, '0')}`
+  return `SN${nextNumber.toString().padStart(3, '0')}`
 }

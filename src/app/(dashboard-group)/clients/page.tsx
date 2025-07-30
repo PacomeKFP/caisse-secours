@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Plus, Search, Edit, Trash2, Eye, Filter, Upload, Calendar, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import { toast } from 'sonner'
 import ClientModal from '@/components/ClientModal'
+import TransactionModal from '@/components/TransactionModal'
+import ExportButton from '@/components/ExportButton'
 
 interface Client {
   id: string
@@ -14,10 +16,11 @@ interface Client {
   solde: number
   totalDepots: number
   totalRetraits: number
+  totalCommissions: number
   createdAt: string
 }
 
-type SortField = 'matricule' | 'nom' | 'telephone' | 'solde' | 'totalDepots' | 'totalRetraits' | 'createdAt'
+type SortField = 'matricule' | 'nom' | 'telephone' | 'solde' | 'totalDepots' | 'totalRetraits' | 'totalCommissions' | 'createdAt'
 type SortOrder = 'asc' | 'desc'
 
 export default function ClientsPage() {
@@ -37,6 +40,8 @@ export default function ClientsPage() {
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false)
+  const [selectedClientForTransaction, setSelectedClientForTransaction] = useState<Client | null>(null)
 
   const filteredClients = clients.filter(client => {
     const matchesSearch = 
@@ -131,6 +136,17 @@ export default function ClientsPage() {
     } catch (error) {
       toast.error('Erreur lors de la suppression')
     }
+  }
+
+  const handleAddTransaction = (client: Client) => {
+    setSelectedClientForTransaction(client)
+    setIsTransactionModalOpen(true)
+  }
+
+  const handleTransactionSuccess = () => {
+    setIsTransactionModalOpen(false)
+    setSelectedClientForTransaction(null)
+    fetchClients() // Refresh client data to update balances
   }
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -288,6 +304,12 @@ export default function ClientsPage() {
                 {uploading ? 'Import...' : 'Import JSON'}
               </label>
             </div>
+            <ExportButton 
+              data={filteredClients} 
+              filename="clients" 
+              type="clients"
+              disabled={loading}
+            />
           </div>
         </div>
 
@@ -396,20 +418,11 @@ export default function ClientsPage() {
                 <thead className="bg-gradient-to-r from-blue-50 to-blue-100 border-b-2 border-blue-300">
                   <tr>
                     <th 
-                      onClick={() => handleSort('matricule')}
-                      className="text-left py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
-                    >
-                      <div className="flex items-center gap-2">
-                        Matricule
-                        <SortIcon field="matricule" />
-                      </div>
-                    </th>
-                    <th 
                       onClick={() => handleSort('nom')}
                       className="text-left py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
                     >
                       <div className="flex items-center gap-2">
-                        Nom
+                        Client
                         <SortIcon field="nom" />
                       </div>
                     </th>
@@ -438,6 +451,15 @@ export default function ClientsPage() {
                       <div className="flex items-center justify-end gap-2">
                         Total Retraits
                         <SortIcon field="totalRetraits" />
+                      </div>
+                    </th>
+                    <th 
+                      onClick={() => handleSort('totalCommissions')}
+                      className="text-right py-4 px-6 font-semibold text-blue-900 cursor-pointer hover:bg-blue-200/50 transition-colors select-none"
+                    >
+                      <div className="flex items-center justify-end gap-2">
+                        Commissions
+                        <SortIcon field="totalCommissions" />
                       </div>
                     </th>
                     <th 
@@ -470,13 +492,15 @@ export default function ClientsPage() {
                         index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                       }`}
                     >
-                      <td className="py-4 px-6 text-sm font-mono font-medium text-gray-900 border-l-2 border-transparent hover:border-gold-400">
-                        {client.matricule}
-                      </td>
-                      <td className="py-4 px-6 text-sm text-gray-900">
-                        <span className="font-semibold text-gold-600">
-                          {client.nom}
-                        </span>
+                      <td className="py-4 px-6 text-sm text-gray-900 border-l-2 border-transparent hover:border-gold-400">
+                        <div>
+                          <span className="font-semibold text-gold-600 block">
+                            {client.nom}
+                          </span>
+                          <span className="font-mono text-xs text-gray-500">
+                            {client.matricule}
+                          </span>
+                        </div>
                       </td>
                       <td className="py-4 px-6 text-sm text-gray-600 font-mono">
                         {client.telephone}
@@ -489,6 +513,11 @@ export default function ClientsPage() {
                       <td className="py-4 px-6 text-sm text-right">
                         <span className="font-semibold text-red-600 bg-red-50 px-2 py-1 rounded-md">
                           {formatCurrency(client.totalRetraits)}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 text-sm text-right">
+                        <span className="font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded-md">
+                          {formatCurrency(client.totalCommissions)}
                         </span>
                       </td>
                       <td className="py-4 px-6 text-sm text-right">
@@ -508,6 +537,13 @@ export default function ClientsPage() {
                           className="flex items-center justify-center gap-1"
                           onClick={(e) => e.stopPropagation()}
                         >
+                          <button
+                            onClick={() => handleAddTransaction(client)}
+                            className="p-2 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-lg transition-all duration-200 transform hover:scale-105"
+                            title="Ajouter une transaction"
+                          >
+                            <Plus size={16} />
+                          </button>
                           <button
                             onClick={() => handleEditClient(client)}
                             className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded-lg transition-all duration-200 transform hover:scale-105"
@@ -590,13 +626,20 @@ export default function ClientsPage() {
         )}
       </div>
 
-      {/* Modal */}
+      {/* Modals */}
       <ClientModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={fetchClients}
         client={selectedClient}
         mode={modalMode}
+      />
+      
+      <TransactionModal
+        isOpen={isTransactionModalOpen}
+        onClose={() => setIsTransactionModalOpen(false)}
+        onSuccess={handleTransactionSuccess}
+        preselectedClient={selectedClientForTransaction}
       />
     </div>
   )

@@ -5,6 +5,7 @@ import { Settings, Play, Search, Filter, ChevronUp, ChevronDown, ChevronLeft, Ch
 import { toast } from 'sonner'
 import CommissionConfigModal from '@/components/CommissionConfigModal'
 import CommissionCollectModal from '@/components/CommissionCollectModal'
+import ExportButton from '@/components/ExportButton'
 // Note: CommissionService import moved to API calls only
 
 interface Commission {
@@ -248,6 +249,12 @@ export default function CommissionsPage() {
             <Play size={20} />
             Lancer Collecte
           </button>
+          <ExportButton 
+            data={filteredCommissions} 
+            filename="commissions" 
+            type="commissions"
+            disabled={loading}
+          />
         </div>
       </div>
 

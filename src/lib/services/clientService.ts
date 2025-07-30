@@ -7,14 +7,14 @@ export class ClientService {
     try {
       const result = await db
         .select({
-          depots: sql<number>`COALESCE(SUM(CASE WHEN ${transactions.type} = 'depot' THEN ${transactions.montant} ELSE 0 END), 0)`,
-          retraits: sql<number>`COALESCE(SUM(CASE WHEN ${transactions.type} = 'retrait' THEN ${transactions.montant} ELSE 0 END), 0)`
+          depots: sql<number>`COALESCE(SUM(CASE WHEN type = 'depot' THEN montant ELSE 0 END), 0)`,
+          retraits: sql<number>`COALESCE(SUM(CASE WHEN type = 'retrait' THEN montant ELSE 0 END), 0)`
         })
         .from(transactions)
         .where(eq(transactions.clientId, clientId))
 
       const { depots, retraits } = result[0] || { depots: 0, retraits: 0 }
-      return depots - retraits
+      return Number(depots) - Number(retraits)
     } catch (error) {
       console.error('Error calculating client balance:', error)
       return 0
@@ -32,33 +32,46 @@ export class ClientService {
           createdAt: clients.createdAt,
           updatedAt: clients.updatedAt,
           totalDepots: sql<number>`
-            COALESCE((
+            CAST(COALESCE((
               SELECT SUM(montant) 
-              FROM ${transactions} 
-              WHERE ${transactions.clientId} = ${clients.id} 
-              AND ${transactions.type} = 'depot'
-            ), 0)
+              FROM transactions 
+              WHERE client_id = clients.id 
+              AND type = 'depot'
+            ), 0) AS REAL)
           `,
           totalRetraits: sql<number>`
-            COALESCE((
-              SELECT SUM(montant) 
-              FROM ${transactions} 
-              WHERE ${transactions.clientId} = ${clients.id} 
-              AND ${transactions.type} = 'retrait'
-            ), 0)
+            CAST(COALESCE((
+              SELECT SUM(montant)
+              FROM transactions 
+              WHERE client_id = clients.id 
+              AND type = 'retrait'
+            ), 0) AS REAL)
+          `,
+          totalCommissions: sql<number>`
+            CAST(COALESCE((
+              SELECT SUM(commission)
+              FROM commissions 
+              WHERE client_id = clients.id
+            ), 0) AS REAL)
           `,
           solde: sql<number>`
-            COALESCE((
+            CAST(COALESCE((
               SELECT SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END)
-              FROM ${transactions} 
-              WHERE ${transactions.clientId} = ${clients.id}
-            ), 0)
+              FROM transactions 
+              WHERE client_id = clients.id
+            ), 0) AS REAL)
           `
         })
         .from(clients)
         .orderBy(desc(clients.createdAt))
 
-      return result
+      return result.map(client => ({
+        ...client,
+        totalDepots: Number(client.totalDepots) || 0,
+        totalRetraits: Number(client.totalRetraits) || 0,
+        totalCommissions: Number(client.totalCommissions) || 0,
+        solde: Number(client.solde) || 0
+      }))
     } catch (error) {
       console.error('Error fetching clients:', error)
       throw new Error('Failed to fetch clients')
@@ -76,34 +89,51 @@ export class ClientService {
           createdAt: clients.createdAt,
           updatedAt: clients.updatedAt,
           totalDepots: sql<number>`
-            COALESCE((
+            CAST(COALESCE((
               SELECT SUM(montant) 
-              FROM ${transactions} 
-              WHERE ${transactions.clientId} = ${clients.id} 
-              AND ${transactions.type} = 'depot'
-            ), 0)
+              FROM transactions 
+              WHERE client_id = clients.id 
+              AND type = 'depot'
+            ), 0) AS REAL)
           `,
           totalRetraits: sql<number>`
-            COALESCE((
-              SELECT SUM(montant) 
-              FROM ${transactions} 
-              WHERE ${transactions.clientId} = ${clients.id} 
-              AND ${transactions.type} = 'retrait'
-            ), 0)
+            CAST(COALESCE((
+              SELECT SUM(montant)
+              FROM transactions 
+              WHERE client_id = clients.id 
+              AND type = 'retrait'
+            ), 0) AS REAL)
+          `,
+          totalCommissions: sql<number>`
+            CAST(COALESCE((
+              SELECT SUM(commission)
+              FROM commissions 
+              WHERE client_id = clients.id
+            ), 0) AS REAL)
           `,
           solde: sql<number>`
-            COALESCE((
+            CAST(COALESCE((
               SELECT SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END)
-              FROM ${transactions} 
-              WHERE ${transactions.clientId} = ${clients.id}
-            ), 0)
+              FROM transactions 
+              WHERE client_id = clients.id
+            ), 0) AS REAL)
           `
         })
         .from(clients)
         .where(eq(clients.id, id))
         .limit(1)
 
-      return result[0] || null
+      const client = result[0] || null
+      if (client) {
+        return {
+          ...client,
+          totalDepots: Number(client.totalDepots) || 0,
+          totalRetraits: Number(client.totalRetraits) || 0,
+          totalCommissions: Number(client.totalCommissions) || 0,
+          solde: Number(client.solde) || 0
+        }
+      }
+      return null
     } catch (error) {
       console.error('Error fetching client:', error)
       throw new Error('Failed to fetch client')

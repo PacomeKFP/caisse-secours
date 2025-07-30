@@ -18,12 +18,14 @@ interface TransactionModalProps {
   isOpen: boolean
   onClose: () => void
   onSuccess: () => void
+  preselectedClient?: Client | null
 }
 
 export default function TransactionModal({ 
   isOpen, 
   onClose, 
-  onSuccess 
+  onSuccess,
+  preselectedClient
 }: TransactionModalProps) {
   const [clients, setClients] = useState<Client[]>([])
   const [filteredClients, setFilteredClients] = useState<Client[]>([])
@@ -42,8 +44,16 @@ export default function TransactionModal({
     if (isOpen) {
       fetchClients()
       resetForm()
+      
+      // Si un client est présélectionné, l'utiliser
+      if (preselectedClient) {
+        setSelectedClient(preselectedClient)
+        setShowClientList(false)
+      } else {
+        setShowClientList(true)
+      }
     }
-  }, [isOpen])
+  }, [isOpen, preselectedClient])
 
   useEffect(() => {
     const filtered = clients.filter(client =>
@@ -53,6 +63,15 @@ export default function TransactionModal({
     )
     setFilteredClients(filtered)
   }, [searchTerm, clients])
+
+  useEffect(() => {
+    // Mettre à jour la source/destination par défaut selon le type
+    if (formData.type === 'retrait' && (!formData.sourceDestination || formData.sourceDestination === 'Recette journalière')) {
+      setFormData(prev => ({ ...prev, sourceDestination: 'Retrait espèces' }))
+    } else if (formData.type === 'depot' && (!formData.sourceDestination || formData.sourceDestination === 'Retrait espèces')) {
+      setFormData(prev => ({ ...prev, sourceDestination: 'Recette journalière' }))
+    }
+  }, [formData.type])
 
   const fetchClients = async () => {
     try {
@@ -83,8 +102,14 @@ export default function TransactionModal({
 
   const handleClientSelect = (client: Client) => {
     setSelectedClient(client)
-    setSearchTerm(client.nom)
+    setSearchTerm('')
     setShowClientList(false)
+  }
+
+  const handleClientDeselect = () => {
+    setSelectedClient(null)
+    setSearchTerm('')
+    setShowClientList(true)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -169,88 +194,99 @@ export default function TransactionModal({
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Client
             </label>
-            <div className="relative">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-                <input
-                  type="text"
-                  placeholder="Rechercher un client..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value)
-                    setShowClientList(true)
-                    if (!e.target.value) {
-                      setSelectedClient(null)
-                    }
-                  }}
-                  onFocus={() => setShowClientList(true)}
-                />
+            
+            {selectedClient ? (
+              // Client sélectionné
+              <div className="relative p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <button
+                  type="button"
+                  onClick={handleClientDeselect}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                >
+                  <X size={16} />
+                </button>
+                <div className="pr-8">
+                  <div className="font-medium text-gray-900">{selectedClient.nom}</div>
+                  <div className="text-sm text-gray-600">
+                    {selectedClient.matricule} • Solde: {formatCurrency(selectedClient.solde)}
+                  </div>
+                </div>
               </div>
-              
-              {showClientList && searchTerm && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                  {filteredClients.length === 0 ? (
-                    <div className="p-3 text-gray-500 text-center">
-                      Aucun client trouvé
-                    </div>
-                  ) : (
-                    filteredClients.map((client) => (
-                      <button
-                        key={client.id}
-                        type="button"
-                        onClick={() => handleClientSelect(client)}
-                        className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-0"
-                      >
-                        <div className="font-medium text-gray-900">{client.nom}</div>
-                        <div className="text-sm text-gray-600">
-                          {client.matricule} • {formatCurrency(client.solde)}
-                        </div>
-                      </button>
-                    ))
-                  )}
+            ) : (
+              // Barre de recherche
+              <div className="relative">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+                  <input
+                    type="text"
+                    placeholder="Rechercher un client..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value)
+                      setShowClientList(true)
+                    }}
+                    onFocus={() => setShowClientList(true)}
+                  />
                 </div>
-              )}
-            </div>
-            {selectedClient && (
-              <div className="mt-2 p-2 bg-gray-50 rounded-lg">
-                <div className="text-sm">
-                  <strong>{selectedClient.nom}</strong> ({selectedClient.matricule})
-                  <br />
-                  Solde actuel: <span className="font-medium">{formatCurrency(selectedClient.solde)}</span>
-                </div>
+                
+                {showClientList && (
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    {filteredClients.length === 0 ? (
+                      <div className="p-3 text-gray-500 text-center">
+                        Aucun client trouvé
+                      </div>
+                    ) : (
+                      filteredClients.map((client) => (
+                        <button
+                          key={client.id}
+                          type="button"
+                          onClick={() => handleClientSelect(client)}
+                          className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-0"
+                        >
+                          <div className="font-medium text-gray-900">{client.nom}</div>
+                          <div className="text-sm text-gray-600">
+                            {client.matricule} • {formatCurrency(client.solde)}
+                          </div>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          {/* Transaction Type */}
+          {/* Transaction Type Switch */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Type de transaction
             </label>
-            <div className="flex gap-3">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="type"
-                  value="depot"
-                  checked={formData.type === 'depot'}
-                  onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value as 'depot' }))}
-                  className="mr-2"
-                />
-                <span className="text-green-600 font-medium">Dépôt</span>
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="type"
-                  value="retrait"
-                  checked={formData.type === 'retrait'}
-                  onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value as 'retrait' }))}
-                  className="mr-2"
-                />
-                <span className="text-red-600 font-medium">Retrait</span>
-              </label>
+            <div className="relative inline-flex w-full">
+              <div className="flex w-full bg-gray-100 rounded-lg p-1">
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, type: 'depot' }))}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
+                    formData.type === 'depot'
+                      ? 'bg-white text-green-600 shadow-sm'
+                      : 'text-gray-600 hover:text-green-600'
+                  }`}
+                >
+                  💰 Dépôt
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, type: 'retrait' }))}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
+                    formData.type === 'retrait'
+                      ? 'bg-white text-red-600 shadow-sm'
+                      : 'text-gray-600 hover:text-red-600'
+                  }`}
+                >
+                  💸 Retrait
+                </button>
+              </div>
             </div>
           </div>
 
@@ -284,7 +320,7 @@ export default function TransactionModal({
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
               value={formData.sourceDestination}
               onChange={(e) => setFormData(prev => ({ ...prev, sourceDestination: e.target.value }))}
-              placeholder={formData.type === 'depot' ? 'Ex: Espèces, Virement...' : 'Ex: Retrait espèces, Transfert...'}
+              placeholder={formData.type === 'depot' ? 'Ex: Recette journalière, Virement...' : 'Ex: Retrait espèces, Transfert...'}
             />
           </div>
 
