@@ -1,5 +1,5 @@
 import { db, clients, transactions, commissions, Client, NewClient } from '@/lib/db'
-import { eq, sum, sql, desc } from 'drizzle-orm'
+import { eq, sum, sql, desc, like, or, count } from 'drizzle-orm'
 
 export class ClientService {
   // Calculate balance dynamically for a single client
@@ -21,8 +21,28 @@ export class ClientService {
     }
   }
 
-  static async getAllClients() {
+  static async getAllClients(page: number = 1, limit: number = 50, search: string = '') {
     try {
+      const offset = (page - 1) * limit
+      
+      // Construire la condition de recherche
+      const searchCondition = search 
+        ? or(
+            like(clients.nom, `%${search}%`),
+            like(clients.matricule, `%${search}%`),
+            like(clients.telephone, `%${search}%`)
+          )
+        : undefined
+
+      // Compter le total
+      const totalResult = await db
+        .select({ count: count() })
+        .from(clients)
+        .where(searchCondition)
+      
+      const total = totalResult[0].count
+
+      // Récupérer les clients avec pagination
       const result = await db
         .select({
           id: clients.id,
@@ -63,19 +83,42 @@ export class ClientService {
           `
         })
         .from(clients)
+        .where(searchCondition)
         .orderBy(desc(clients.createdAt))
+        .limit(limit)
+        .offset(offset)
 
-      return result.map(client => ({
+      const clientsData = result.map(client => ({
         ...client,
         totalDepots: Number(client.totalDepots) || 0,
         totalRetraits: Number(client.totalRetraits) || 0,
         totalCommissions: Number(client.totalCommissions) || 0,
         solde: Number(client.solde) || 0
       }))
+
+      const pages = Math.ceil(total / limit)
+
+      return {
+        clients: clientsData,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages,
+          hasNext: page < pages,
+          hasPrev: page > 1
+        }
+      }
     } catch (error) {
       console.error('Error fetching clients:', error)
       throw new Error('Failed to fetch clients')
     }
+  }
+
+  // Ancienne méthode pour compatibilité - deprecated
+  static async getAllClientsLegacy() {
+    const result = await this.getAllClients(1, 1000)
+    return result.clients
   }
 
   static async getClientById(id: string) {

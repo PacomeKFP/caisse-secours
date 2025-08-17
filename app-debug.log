@@ -1,0 +1,262 @@
+
+> caisse-secours-app@1.0.0 dev
+> next dev --turbo --port 3002
+
+   ▲ Next.js 15.4.4 (Turbopack)
+   - Local:        http://localhost:3002
+   - Network:      http://192.168.43.16:3002
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Compiled middleware in 495ms
+ ✓ Ready in 3.9s
+{"@timestamp":"2025-07-30T19:11:17.601Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:11:17.601Z","message":"User action audit","userId":"anonymous","action":"unauthorized_access_attempt","resource":"protected_route","pathname":"/","ip":"::ffff:127.0.0.1","userAgent":"curl/7.83.1","requestId":"req_1753902677601_fff7v6fid"}
+ ○ Compiling /clients ...
+ ✓ Compiled /clients in 8.3s
+ GET /clients 200 in 9942ms
+{"@timestamp":"2025-07-30T19:12:02.951Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:02.951Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":11,"requestId":"req_1753902722939_ccy9m8qnm","userId":"admin"}
+{"@timestamp":"2025-07-30T19:12:02.951Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:02.951Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753902722939_ccy9m8qnm"}
+ ○ Compiling /api/clients ...
+ ✓ Compiled /api/clients in 1513ms
+20:12:05 [35maudit[39m:  [35mUser action audit[39m
+20:12:05 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:12:05 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:12:05 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:12:05 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 2313ms
+{"@timestamp":"2025-07-30T19:12:05.276Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:05.276Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":1,"requestId":"req_1753902725275_plovtcibz","userId":"admin"}
+{"@timestamp":"2025-07-30T19:12:05.276Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:05.276Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753902725275_plovtcibz"}
+20:12:05 [35maudit[39m:  [35mUser action audit[39m
+20:12:05 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:12:05 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:12:05 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:12:05 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 454ms
+ ✓ Compiled /login in 469ms
+ GET /login 200 in 687ms
+{"@timestamp":"2025-07-30T19:12:36.947Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:36.947Z","message":"API request processed","module":"api","operation":"request","method":"POST","pathname":"/api/auth/login","status":200,"duration":0,"requestId":"req_1753902756947_10xf9r4xl"}
+ ✓ Compiled /api/auth/login in 233ms
+ POST /api/auth/login 200 in 383ms
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 567ms
+ GET /dashboard 200 in 722ms
+{"@timestamp":"2025-07-30T19:12:38.205Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:38.205Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/dashboard","status":200,"duration":3,"requestId":"req_1753902758202_7omt0an4u","userId":"admin"}
+ ✓ Compiled /api/dashboard in 443ms
+ GET /api/dashboard 200 in 792ms
+{"@timestamp":"2025-07-30T19:12:39.021Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:39.021Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/dashboard","status":200,"duration":9,"requestId":"req_1753902759012_xt7esap2i","userId":"admin"}
+ GET /api/dashboard 200 in 288ms
+ GET /clients 200 in 160ms
+{"@timestamp":"2025-07-30T19:12:56.357Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:56.357Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":2,"requestId":"req_1753902776355_yejr1nzck","userId":"admin"}
+{"@timestamp":"2025-07-30T19:12:56.358Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:56.358Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753902776355_yejr1nzck"}
+20:12:56 [35maudit[39m:  [35mUser action audit[39m
+20:12:56 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:12:56 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:12:56 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:12:56 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 474ms
+{"@timestamp":"2025-07-30T19:12:56.845Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:56.845Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":2,"requestId":"req_1753902776843_d4ff3n5fb","userId":"admin"}
+{"@timestamp":"2025-07-30T19:12:56.845Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:12:56.845Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753902776843_d4ff3n5fb"}
+20:12:57 [35maudit[39m:  [35mUser action audit[39m
+20:12:57 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:12:57 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:12:57 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:12:57 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 467ms
+ GET /dashboard 200 in 260ms
+{"@timestamp":"2025-07-30T19:13:05.658Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:05.658Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/dashboard","status":200,"duration":5,"requestId":"req_1753902785653_ncrdu28xx","userId":"admin"}
+ GET /api/dashboard 200 in 355ms
+ ○ Compiling /transactions ...
+ ✓ Compiled /transactions in 583ms
+ GET /transactions 200 in 695ms
+{"@timestamp":"2025-07-30T19:13:07.737Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:07.737Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/transactions","status":200,"duration":3,"requestId":"req_1753902787734_awve55uv9","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:07.737Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:07.737Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/transactions","method":"GET","endpoint":"/api/transactions","requestId":"req_1753902787734_awve55uv9"}
+ ✓ Compiled /api/transactions in 373ms
+ GET /api/transactions 200 in 572ms
+{"@timestamp":"2025-07-30T19:13:08.325Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:08.325Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/transactions","status":200,"duration":1,"requestId":"req_1753902788324_1xmu6akex","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:08.326Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:08.326Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/transactions","method":"GET","endpoint":"/api/transactions","requestId":"req_1753902788324_1xmu6akex"}
+ GET /api/transactions 200 in 181ms
+ ○ Compiling /commissions ...
+ ✓ Compiled /commissions in 543ms
+ GET /commissions 200 in 687ms
+{"@timestamp":"2025-07-30T19:13:16.064Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.064Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions","status":200,"duration":3,"requestId":"req_1753902796061_5jhtbscmx","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:16.065Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.065Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions","method":"GET","endpoint":"/api/commissions","requestId":"req_1753902796061_5jhtbscmx"}
+{"@timestamp":"2025-07-30T19:13:16.067Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.067Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions/config","status":200,"duration":4,"requestId":"req_1753902796063_3487cjh9c","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:16.067Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.067Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/config","method":"GET","endpoint":"/api/commissions/config","requestId":"req_1753902796063_3487cjh9c"}
+ GET /api/commissions/config 200 in 561ms
+ ○ Compiling /api/commissions ...
+{"@timestamp":"2025-07-30T19:13:16.644Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.644Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions/config","status":200,"duration":1,"requestId":"req_1753902796643_uoezxvlww","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:16.644Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.644Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/config","method":"GET","endpoint":"/api/commissions/config","requestId":"req_1753902796643_uoezxvlww"}
+ ✓ Compiled /api/commissions in 634ms
+ GET /api/commissions 200 in 791ms
+{"@timestamp":"2025-07-30T19:13:16.910Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.910Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions","status":200,"duration":9,"requestId":"req_1753902796901_7x09le6sd","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:16.910Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:16.910Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions","method":"GET","endpoint":"/api/commissions","requestId":"req_1753902796901_7x09le6sd"}
+ GET /api/commissions/config 200 in 267ms
+ GET /api/commissions 200 in 173ms
+ GET /transactions 200 in 139ms
+{"@timestamp":"2025-07-30T19:13:25.461Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:25.461Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/transactions","status":200,"duration":1,"requestId":"req_1753902805460_e5kltby59","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:25.461Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:25.461Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/transactions","method":"GET","endpoint":"/api/transactions","requestId":"req_1753902805460_e5kltby59"}
+ GET /api/transactions 200 in 209ms
+{"@timestamp":"2025-07-30T19:13:25.679Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:25.679Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/transactions","status":200,"duration":1,"requestId":"req_1753902805678_ehwwtaxin","userId":"admin"}
+{"@timestamp":"2025-07-30T19:13:25.679Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:13:25.679Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/transactions","method":"GET","endpoint":"/api/transactions","requestId":"req_1753902805678_ehwwtaxin"}
+ GET /api/transactions 200 in 202ms
+ GET /dashboard 200 in 154ms
+{"@timestamp":"2025-07-30T19:14:18.623Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:18.623Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/dashboard","status":200,"duration":1,"requestId":"req_1753902858622_a8syefrba","userId":"admin"}
+ GET /api/dashboard 200 in 364ms
+{"@timestamp":"2025-07-30T19:14:18.997Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:18.997Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/dashboard","status":200,"duration":1,"requestId":"req_1753902858996_pn1rbfk20","userId":"admin"}
+ GET /api/dashboard 200 in 271ms
+ GET /commissions 200 in 135ms
+{"@timestamp":"2025-07-30T19:14:22.352Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.352Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions","status":200,"duration":3,"requestId":"req_1753902862349_91brdnddz","userId":"admin"}
+{"@timestamp":"2025-07-30T19:14:22.353Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.353Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions","method":"GET","endpoint":"/api/commissions","requestId":"req_1753902862349_91brdnddz"}
+{"@timestamp":"2025-07-30T19:14:22.356Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.356Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions/config","status":200,"duration":1,"requestId":"req_1753902862355_1x7293w58","userId":"admin"}
+{"@timestamp":"2025-07-30T19:14:22.357Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.357Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/config","method":"GET","endpoint":"/api/commissions/config","requestId":"req_1753902862355_1x7293w58"}
+ GET /api/commissions 200 in 202ms
+{"@timestamp":"2025-07-30T19:14:22.579Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.579Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions","status":200,"duration":10,"requestId":"req_1753902862569_f5ecurwn7","userId":"admin"}
+{"@timestamp":"2025-07-30T19:14:22.580Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.580Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions","method":"GET","endpoint":"/api/commissions","requestId":"req_1753902862569_f5ecurwn7"}
+ GET /api/commissions/config 200 in 224ms
+{"@timestamp":"2025-07-30T19:14:22.597Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.597Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/commissions/config","status":200,"duration":1,"requestId":"req_1753902862596_94g2bv6pg","userId":"admin"}
+{"@timestamp":"2025-07-30T19:14:22.597Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:22.597Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/config","method":"GET","endpoint":"/api/commissions/config","requestId":"req_1753902862596_94g2bv6pg"}
+ GET /api/commissions 200 in 186ms
+ GET /api/commissions/config 200 in 189ms
+{"@timestamp":"2025-07-30T19:14:38.343Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:38.343Z","message":"API request processed","module":"api","operation":"request","method":"POST","pathname":"/api/commissions/preview","status":200,"duration":2,"requestId":"req_1753902878341_xqebvggfm","userId":"admin"}
+{"@timestamp":"2025-07-30T19:14:38.343Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:38.343Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/preview","method":"POST","endpoint":"/api/commissions/preview","requestId":"req_1753902878341_xqebvggfm"}
+ ✓ Compiled /api/commissions/preview in 274ms
+ POST /api/commissions/preview 200 in 579ms
+ GET /transactions 200 in 119ms
+{"@timestamp":"2025-07-30T19:14:53.317Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:53.317Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/transactions","status":200,"duration":1,"requestId":"req_1753902893316_u4mos08u6","userId":"admin"}
+{"@timestamp":"2025-07-30T19:14:53.318Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:53.318Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/transactions","method":"GET","endpoint":"/api/transactions","requestId":"req_1753902893316_u4mos08u6"}
+ GET /api/transactions 200 in 205ms
+{"@timestamp":"2025-07-30T19:14:53.531Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:53.531Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/transactions","status":200,"duration":1,"requestId":"req_1753902893530_ibkzwhg4n","userId":"admin"}
+{"@timestamp":"2025-07-30T19:14:53.531Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:14:53.531Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/transactions","method":"GET","endpoint":"/api/transactions","requestId":"req_1753902893530_ibkzwhg4n"}
+ GET /api/transactions 200 in 224ms
+ ○ Compiling /clients/[matricule] ...
+ ✓ Compiled /clients/[matricule] in 552ms
+ GET /clients/COMMISSION_SYSTEM 200 in 1905ms
+{"@timestamp":"2025-07-30T19:15:05.061Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:05.061Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":4,"requestId":"req_1753902905057_9j8peawdv","userId":"admin"}
+{"@timestamp":"2025-07-30T19:15:05.062Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:05.062Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753902905057_9j8peawdv"}
+20:15:05 [35maudit[39m:  [35mUser action audit[39m
+20:15:05 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:15:05 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:15:05 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:15:05 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients?matricule=COMMISSION_SYSTEM 200 in 510ms
+ GET /clients/CLT002 200 in 275ms
+{"@timestamp":"2025-07-30T19:15:15.022Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:15.022Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":2,"requestId":"req_1753902915020_fr3fnsw5k","userId":"admin"}
+{"@timestamp":"2025-07-30T19:15:15.022Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:15.022Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753902915020_fr3fnsw5k"}
+20:15:15 [35maudit[39m:  [35mUser action audit[39m
+20:15:15 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:15:15 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:15:15 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:15:15 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients?matricule=CLT002 200 in 530ms
+ GET /transactions 200 in 248ms
+{"@timestamp":"2025-07-30T19:15:24.215Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:24.215Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/transactions","status":200,"duration":2,"requestId":"req_1753902924213_qnwhrzgsp","userId":"admin"}
+{"@timestamp":"2025-07-30T19:15:24.216Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:24.216Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/transactions","method":"GET","endpoint":"/api/transactions","requestId":"req_1753902924213_qnwhrzgsp"}
+ GET /api/transactions 200 in 210ms
+ GET /clients/CLT046 200 in 286ms
+{"@timestamp":"2025-07-30T19:15:37.182Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:37.182Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":2,"requestId":"req_1753902937180_t5mpscz0t","userId":"admin"}
+{"@timestamp":"2025-07-30T19:15:37.183Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:15:37.183Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753902937180_t5mpscz0t"}
+20:15:37 [35maudit[39m:  [35mUser action audit[39m
+20:15:37 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:15:37 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:15:37 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:15:37 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients?matricule=CLT046 200 in 527ms
+{"@timestamp":"2025-07-30T19:28:29.599Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:28:29.599Z","message":"API request processed","module":"api","operation":"request","method":"POST","pathname":"/api/commissions/preview","status":200,"duration":3,"requestId":"req_1753903709596_m0vwbji0b","userId":"admin"}
+{"@timestamp":"2025-07-30T19:28:29.600Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:28:29.600Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/preview","method":"POST","endpoint":"/api/commissions/preview","requestId":"req_1753903709596_m0vwbji0b"}
+ POST /api/commissions/preview 200 in 853ms
+{"@timestamp":"2025-07-30T19:28:59.170Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:28:59.170Z","message":"API request processed","module":"api","operation":"request","method":"POST","pathname":"/api/commissions/preview","status":200,"duration":1,"requestId":"req_1753903739169_im6f6qp12","userId":"admin"}
+{"@timestamp":"2025-07-30T19:28:59.170Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:28:59.170Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/preview","method":"POST","endpoint":"/api/commissions/preview","requestId":"req_1753903739169_im6f6qp12"}
+ POST /api/commissions/preview 200 in 314ms
+{"@timestamp":"2025-07-30T19:29:36.186Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:29:36.186Z","message":"API request processed","module":"api","operation":"request","method":"POST","pathname":"/api/commissions/preview","status":200,"duration":1,"requestId":"req_1753903776185_ip2dd0di3","userId":"admin"}
+{"@timestamp":"2025-07-30T19:29:36.186Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:29:36.186Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/commissions/preview","method":"POST","endpoint":"/api/commissions/preview","requestId":"req_1753903776185_ip2dd0di3"}
+Error previewing commission collection: Error: Les commissions pour 2025-07 ont déjà été collectées
+    at CommissionService.previewCommissionCollection (src\lib\services\commissionService.ts:114:14)
+    at async POST (src\app\api\commissions\preview\route.ts:31:20)
+  112 |
+  113 |       if (existing.length > 0) {
+> 114 |         throw new Error(`Les commissions pour ${moisAnnee} ont déjà été collectées`)
+      |              ^
+  115 |       }
+  116 |
+  117 |       // Get commission configuration
+POST /api/commissions/preview error: Error: Les commissions pour 2025-07 ont déjà été collectées
+    at CommissionService.previewCommissionCollection (src\lib\services\commissionService.ts:114:14)
+    at async POST (src\app\api\commissions\preview\route.ts:31:20)
+  112 |
+  113 |       if (existing.length > 0) {
+> 114 |         throw new Error(`Les commissions pour ${moisAnnee} ont déjà été collectées`)
+      |              ^
+  115 |       }
+  116 |
+  117 |       // Get commission configuration
+ POST /api/commissions/preview 400 in 884ms
+ GET /clients/CLT046 200 in 812ms
+{"@timestamp":"2025-07-30T19:30:17.069Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:17.069Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":11,"requestId":"req_1753903817058_xw6e85wnx","userId":"admin"}
+{"@timestamp":"2025-07-30T19:30:17.069Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:17.069Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753903817058_xw6e85wnx"}
+20:30:17 [35maudit[39m:  [35mUser action audit[39m
+20:30:18 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:30:18 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:30:18 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:30:18 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients?matricule=CLT046 200 in 940ms
+{"@timestamp":"2025-07-30T19:30:18.028Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:18.028Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":1,"requestId":"req_1753903818027_sefjbn3j2","userId":"admin"}
+{"@timestamp":"2025-07-30T19:30:18.028Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:18.028Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753903818027_sefjbn3j2"}
+20:30:18 [35maudit[39m:  [35mUser action audit[39m
+20:30:18 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:30:18 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:30:18 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:30:18 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients?matricule=CLT046 200 in 850ms
+ GET /clients 200 in 476ms
+{"@timestamp":"2025-07-30T19:30:24.435Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:24.435Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":3,"requestId":"req_1753903824432_adu6rvthb","userId":"admin"}
+{"@timestamp":"2025-07-30T19:30:24.435Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:24.435Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753903824432_adu6rvthb"}
+20:30:24 [35maudit[39m:  [35mUser action audit[39m
+20:30:25 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:30:25 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:30:25 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:30:25 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 739ms
+{"@timestamp":"2025-07-30T19:30:25.195Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:25.195Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":3,"requestId":"req_1753903825192_dj46vhwg6","userId":"admin"}
+{"@timestamp":"2025-07-30T19:30:25.196Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T19:30:25.196Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753903825192_dj46vhwg6"}
+20:30:25 [35maudit[39m:  [35mUser action audit[39m
+20:30:25 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+20:30:25 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+20:30:25 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+20:30:26 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 807ms
+ GET /clients 200 in 1094ms
+{"@timestamp":"2025-07-30T20:18:39.062Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:18:39.062Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":3,"requestId":"req_1753906719059_vq95r9bmk","userId":"admin"}
+{"@timestamp":"2025-07-30T20:18:39.062Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:18:39.062Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753906719059_vq95r9bmk"}
+21:18:39 [35maudit[39m:  [35mUser action audit[39m
+21:18:40 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+21:18:40 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+21:18:40 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+21:18:40 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 1911ms
+{"@timestamp":"2025-07-30T20:18:41.010Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:18:41.010Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":3,"requestId":"req_1753906721007_xkvv9bazr","userId":"admin"}
+{"@timestamp":"2025-07-30T20:18:41.011Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:18:41.011Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753906721007_xkvv9bazr"}
+21:18:41 [35maudit[39m:  [35mUser action audit[39m
+21:18:42 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+21:18:42 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+21:18:42 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+21:18:42 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 1520ms
+ ✓ Compiled in 1936ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /clients 200 in 2857ms
+{"@timestamp":"2025-07-30T20:20:22.958Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:20:22.958Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":11,"requestId":"req_1753906822947_vcsbtgtcq","userId":"admin"}
+{"@timestamp":"2025-07-30T20:20:22.959Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:20:22.959Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753906822947_vcsbtgtcq"}
+21:20:23 [35maudit[39m:  [35mUser action audit[39m
+21:20:25 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+21:20:25 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+21:20:25 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+21:20:25 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 2324ms
+{"@timestamp":"2025-07-30T20:20:25.335Z","level":"info","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:20:25.335Z","message":"API request processed","module":"api","operation":"request","method":"GET","pathname":"/api/clients","status":200,"duration":26,"requestId":"req_1753906825309_5c8oee2ja","userId":"admin"}
+{"@timestamp":"2025-07-30T20:20:25.335Z","level":"audit","service":"caisse-secours","environment":"development","timestamp":"2025-07-30T20:20:25.335Z","message":"User action audit","userId":"admin","action":"api_access","resource":"/api/clients","method":"GET","endpoint":"/api/clients","requestId":"req_1753906825309_5c8oee2ja"}
+21:20:25 [35maudit[39m:  [35mUser action audit[39m
+21:20:26 [36mbusiness[39m: [metrics:snapshot] [36mBusiness metrics snapshot[39m
+21:20:26 [34minfo[39m: [clients:get_all_clients] [34mPerformance metric[39m
+21:20:26 [34minfo[39m:  [34mMetric recorded: operation_duration_ms[39m
+21:20:26 [35maudit[39m:  [35mData access audit[39m
+ GET /api/clients 200 in 1361ms

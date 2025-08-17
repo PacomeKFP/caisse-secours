@@ -107,7 +107,7 @@ export default function TransactionsPage() {
   }, [])
 
   const handleDeleteTransaction = async (transaction: Transaction) => {
-    if (!confirm(`Êtes-vous sûr de vouloir supprimer cette transaction de ${transaction.montant.toLocaleString()} FCFA pour ${transaction.clientNom} ?`)) {
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer cette transaction de ${formatCurrency(transaction.montant)} pour ${transaction.clientNom} ?`)) {
       return
     }
 
@@ -200,17 +200,23 @@ export default function TransactionsPage() {
   }
 
   const formatCurrency = (amount: number) => {
-    return amount.toLocaleString('fr-FR') + ' FCFA'
+    // Use consistent formatting to avoid hydration issues
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount) + ' FCFA'
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('fr-FR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    // Use consistent date formatting to avoid hydration issues
+    const date = new Date(dateString)
+    const day = date.getDate().toString().padStart(2, '0')
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const year = date.getFullYear()
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    return `${day}/${month}/${year} ${hours}:${minutes}`
   }
 
   const getTotals = () => {

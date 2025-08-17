@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { TransactionService } from '@/lib/services/transactionService'
+import { ConfigService } from '@/lib/services/configService'
 import { isAuthenticated } from '@/lib/auth/session'
 
 export async function GET(request: NextRequest) {
@@ -45,23 +46,92 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { clientId, type, montant, description, sourceDestination } = body
 
+    // Validation des champs requis
     if (!clientId || !type || !montant || !sourceDestination) {
       return NextResponse.json(
-        { error: 'Client, type, montant et source/destination sont requis' },
+        { 
+          error: 'Champs requis manquants',
+          details: 'Les champs clientId, type, montant et sourceDestination sont obligatoires',
+          received: { clientId: !!clientId, type: !!type, montant: !!montant, sourceDestination: !!sourceDestination }
+        },
         { status: 400 }
       )
     }
 
+    // Validation du type de données
+    if (typeof montant !== 'number' || isNaN(montant)) {
+      return NextResponse.json(
+        { 
+          error: 'Type de données invalide',
+          details: 'Le montant doit être un nombre valide',
+          received: { montant, type: typeof montant }
+        },
+        { status: 400 }
+      )
+    }
+
+    // Validation du montant minimum
     if (montant <= 0) {
       return NextResponse.json(
-        { error: 'Le montant doit être positif' },
+        { 
+          error: 'Montant invalide',
+          details: 'Le montant doit être strictement positif (> 0)',
+          received: { montant }
+        },
         { status: 400 }
       )
     }
 
+    // Récupérer les limites de transaction depuis la configuration
+    const limits = await ConfigService.getTransactionLimits()
+    
+    // Validation du montant maximum
+    if (montant > limits.maxAmount) {
+      return NextResponse.json(
+        { 
+          error: 'Montant trop élevé',
+          details: `Le montant maximum autorisé est de ${limits.maxAmount.toLocaleString()} FCFA`,
+          received: { montant },
+          limit: limits.maxAmount
+        },
+        { status: 400 }
+      )
+    }
+
+    // Validation du type de transaction
     if (!['depot', 'retrait'].includes(type)) {
       return NextResponse.json(
-        { error: 'Type de transaction invalide' },
+        { 
+          error: 'Type de transaction invalide',
+          details: 'Le type doit être "depot" ou "retrait"',
+          received: { type },
+          allowed: ['depot', 'retrait']
+        },
+        { status: 400 }
+      )
+    }
+
+    // Validation des montants minimum par type
+    if (type === 'depot' && montant < limits.minDepot) {
+      return NextResponse.json(
+        { 
+          error: 'Montant de dépôt trop faible',
+          details: `Le montant minimum pour un dépôt est de ${limits.minDepot} FCFA`,
+          received: { montant, type },
+          minimum: limits.minDepot
+        },
+        { status: 400 }
+      )
+    }
+
+    if (type === 'retrait' && montant < limits.minRetrait) {
+      return NextResponse.json(
+        { 
+          error: 'Montant de retrait trop faible',
+          details: `Le montant minimum pour un retrait est de ${limits.minRetrait} FCFA`,
+          received: { montant, type },
+          minimum: limits.minRetrait
+        },
         { status: 400 }
       )
     }

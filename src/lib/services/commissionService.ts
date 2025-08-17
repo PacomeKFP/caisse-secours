@@ -5,7 +5,7 @@ export interface CommissionCalculation {
   clientId: string
   nom: string
   matricule: string
-  soldeBase: number
+  soldeBase: number // Now represents total deposits for the month, not account balance
   commission: number
   tranche: {
     montantMin: number
@@ -120,38 +120,50 @@ export class CommissionService {
         throw new Error('Configuration des commissions non trouvée')
       }
 
-      // Get all clients with their current balance (calculated dynamically)
+      // Get all clients with their TOTAL DEPOSITS for the specified month (CORRECT CALCULATION)
+      const [year, month] = moisAnnee.split('-')
+      const startDate = `${year}-${month.padStart(2, '0')}-01`
+      const endDate = month === '12' 
+        ? `${parseInt(year) + 1}-01-01` 
+        : `${year}-${(parseInt(month) + 1).toString().padStart(2, '0')}-01`
+
       const clientList = await db
         .select({
           id: clients.id,
           nom: clients.nom,
           matricule: clients.matricule,
-          solde: sql<number>`COALESCE(
-            (SELECT SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END) 
+          totalDepots: sql<number>`COALESCE(
+            (SELECT SUM(montant) 
              FROM transactions 
-             WHERE client_id = clients.id), 
+             WHERE client_id = clients.id 
+             AND type = 'depot' 
+             AND created_at >= ${startDate}
+             AND created_at < ${endDate}), 
             0
           )`
         })
         .from(clients)
         .where(sql`(
-          SELECT COALESCE(SUM(CASE WHEN type = 'depot' THEN montant ELSE -montant END), 0) 
+          SELECT COALESCE(SUM(montant), 0) 
           FROM transactions 
           WHERE client_id = clients.id
+          AND type = 'depot'
+          AND created_at >= ${startDate}
+          AND created_at < ${endDate}
         ) > 0`)
 
       const calculations: CommissionCalculation[] = []
 
       for (const client of clientList) {
-        const solde = Number(client.solde) || 0
-        const calculation = this.calculateCommission(solde, config)
+        const totalDepots = Number(client.totalDepots) || 0
+        const calculation = this.calculateCommission(totalDepots, config)
         
         if (calculation.commission > 0) {
           calculations.push({
             clientId: client.id,
             nom: client.nom,
             matricule: client.matricule,
-            soldeBase: solde,
+            soldeBase: totalDepots, // Now represents total deposits for the month
             commission: Number(calculation.commission) || 0,
             tranche: calculation.tranche
           })
@@ -178,8 +190,8 @@ export class CommissionService {
         `)
         
         const transactionStmt = sqliteDb.prepare(`
-          INSERT INTO transactions (id, client_id, type, montant, description, source_destination, created_at)
-          VALUES (?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO transactions (id, client_id, type, montant, description, source_destination, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `)
         
         // Create commission records and corresponding withdrawal transactions
@@ -208,7 +220,8 @@ export class CommissionService {
             'retrait',
             calc.commission,
             `Commission prélevée pour ${this.formatMoisAnnee(moisAnnee)}`,
-            'COMMISSION_SYSTEM',
+            'Système de Commission',
+            now,
             now
           )
         }

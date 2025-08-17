@@ -148,15 +148,21 @@ export default function CommissionsPage() {
   }, [commissions, fetchAvailableMonths])
 
   const formatCurrency = (amount: number) => {
-    return amount.toLocaleString('fr-FR') + ' FCFA'
+    // Use consistent formatting to avoid hydration issues
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount) + ' FCFA'
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    })
+    // Use consistent date formatting to avoid hydration issues
+    const date = new Date(dateString)
+    const day = date.getDate().toString().padStart(2, '0')
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const year = date.getFullYear()
+    return `${day}/${month}/${year}`
   }
 
   const formatMonth = (monthStr: string) => {
@@ -337,14 +343,14 @@ export default function CommissionsPage() {
                       <div className="mb-3">
                         <div className="text-xs font-semibold text-gold-600 uppercase tracking-wide mb-1">Tranche {index + 1}</div>
                         <div className="text-sm font-medium text-gray-700 leading-tight">
-                          {tranche.montantMin.toLocaleString()} - {tranche.montantMax?.toLocaleString() || '∞'} FCFA
+                          {formatCurrency(tranche.montantMin).replace(' FCFA', '')} - {tranche.montantMax ? formatCurrency(tranche.montantMax).replace(' FCFA', '') : '∞'} FCFA
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
                           <div className="text-xs text-gray-500 mb-1">Commission fixe</div>
                           <div className="text-2xl font-bold bg-gradient-to-r from-gold-600 to-yellow-600 bg-clip-text text-transparent">
-                            {tranche.montant.toLocaleString()} FCFA
+                            {formatCurrency(tranche.montant)}
                           </div>
                         </div>
                         <div className="p-2 bg-gradient-to-r from-gold-100 to-yellow-100 rounded-lg group-hover:from-gold-200 group-hover:to-yellow-200 transition-all duration-200">

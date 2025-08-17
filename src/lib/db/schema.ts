@@ -47,6 +47,18 @@ export const commissionConfig = sqliteTable('commission_config', {
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
 })
 
+// Table de configuration des paramètres métier
+export const appConfig = sqliteTable('app_config', {
+  id: text('id').primaryKey().$defaultFn(() => createId()),
+  category: text('category').notNull(), // 'transactions', 'clients', 'system'
+  key: text('key').notNull(),
+  value: text('value').notNull(), // JSON stringifié
+  description: text('description'),
+  type: text('type').notNull(), // 'number', 'string', 'boolean', 'object'
+  updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString()),
+  updatedBy: text('updated_by').notNull().default('system')
+})
+
 export type Client = typeof clients.$inferSelect
 export type NewClient = typeof clients.$inferInsert
 export type Transaction = typeof transactions.$inferSelect
@@ -55,3 +67,5 @@ export type Commission = typeof commissions.$inferSelect
 export type NewCommission = typeof commissions.$inferInsert
 export type CommissionConfig = typeof commissionConfig.$inferSelect
 export type NewCommissionConfig = typeof commissionConfig.$inferInsert
+export type AppConfig = typeof appConfig.$inferSelect
+export type NewAppConfig = typeof appConfig.$inferInsert

@@ -89,7 +89,7 @@ export default function ClientsPage() {
       const response = await fetch('/api/clients')
       if (response.ok) {
         const data = await response.json()
-        setClients(data)
+        setClients(data.clients || [])
       } else {
         toast.error('Erreur lors du chargement des clients')
       }
@@ -218,11 +218,21 @@ export default function ClientsPage() {
   }
 
   const formatCurrency = (amount: number) => {
-    return amount.toLocaleString('fr-FR') + ' FCFA'
+    // Use consistent formatting to avoid hydration issues
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount) + ' FCFA'
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR')
+    // Use consistent date formatting to avoid hydration issues
+    const date = new Date(dateString)
+    const day = date.getDate().toString().padStart(2, '0')
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const year = date.getFullYear()
+    return `${day}/${month}/${year}`
   }
 
   if (loading) {

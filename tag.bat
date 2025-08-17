@@ -1,0 +1,1 @@
+git tag -a caisse-secours-admin-1.0 -m "Caisse Secours Admin v1.0 - Complete microfinance management system with client/transaction/commission modules, modern UI, CSV/JSON export, and critical SQL fixes"

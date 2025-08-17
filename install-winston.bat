@@ -1,0 +1,1 @@
+npm install winston winston-daily-rotate-file

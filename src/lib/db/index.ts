@@ -9,3 +9,6 @@ export const db = drizzle(sqlite, { schema })
 export const sqliteDb = sqlite
 
 export * from './schema'
+
+// Export appConfig for imports
+export { appConfig } from './schema'

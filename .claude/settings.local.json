@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "Bash(echo $SHELL)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(sqlite3:*)",
+      "Bash(npx drizzle-kit migrate:*)",
+      "Bash(taskkill:*)",
+      "Bash(start /B cmd /c \"npm run dev -- --port 3002 > app-debug.log 2>&1\")",
+      "Bash(timeout:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }

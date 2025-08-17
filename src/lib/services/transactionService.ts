@@ -55,7 +55,7 @@ export class TransactionService {
       }
 
       // For withdrawals, check current balance (but skip for commission withdrawals from system)
-      if (transactionData.type === 'retrait' && transactionData.sourceDestination !== 'COMMISSION_SYSTEM') {
+      if (transactionData.type === 'retrait' && transactionData.sourceDestination !== 'Système de Commission') {
         const currentBalance = await ClientService.calculateClientBalance(transactionData.clientId)
         if (currentBalance < transactionData.montant) {
           throw new Error('Solde insuffisant pour ce retrait')

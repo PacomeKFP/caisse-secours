@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 2555
+    },
+    "auditLog": "C:\\workspace\\clients\\caisse-secours\\microfinance-app\\logs\\.4d2404992911c11d9b6eac229858df1f92d8296f-audit.json",
+    "files": [
+        {
+            "date": 1753882502427,
+            "name": "C:\\workspace\\clients\\caisse-secours\\microfinance-app\\logs\\audit-2025-07-30.log",
+            "hash": "82df6e4baa3e80d6a579fdd0cc2d78246b77b1ff57175735b75e37042372c1b0"
+        },
+        {
+            "date": 1755468119268,
+            "name": "C:\\workspace\\clients\\caisse-secours\\microfinance-app\\logs\\audit-2025-08-17.log",
+            "hash": "429a04c59ca33989e1aaf2ae84fdaf39b19542a750b4f5f67f50652159ca2980"
+        }
+    ],
+    "hashType": "sha256"
+}
