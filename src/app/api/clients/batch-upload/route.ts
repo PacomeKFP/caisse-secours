@@ -19,6 +19,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { clients } = body
 
+    console.log('POST /api/clients/batch-upload received:', body)
+
     if (!Array.isArray(clients) || clients.length === 0) {
       return NextResponse.json(
         { error: 'Le champ "clients" doit être un tableau non vide' },

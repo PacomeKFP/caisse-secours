@@ -4,7 +4,8 @@
       "Bash(node:*)",
       "Bash(mkdir:*)",
       "Bash(npm create:*)",
-      "Bash(npx cap:*)"
+      "Bash(npx cap:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }
