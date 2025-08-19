@@ -9,10 +9,27 @@ const STORAGE_KEYS = {
 // Génération d'ID simple
 export const generateId = () => Math.random().toString(36).substring(2) + Date.now().toString(36)
 
+// Calculer le solde d'un client
+const calculateClientBalance = (clientId: string): number => {
+  const transactions = getTransactions(clientId)
+  return transactions.reduce((acc, t) => {
+    return t.type === 'depot' ? acc + t.montant : acc - t.montant
+  }, 0)
+}
+
 // Clients
 export const getClients = (): Client[] => {
   const data = localStorage.getItem(STORAGE_KEYS.CLIENTS)
   return data ? JSON.parse(data) : []
+}
+
+// Clients avec solde calculé
+export const getClientsWithBalance = (): (Client & { solde: number })[] => {
+  const clients = getClients()
+  return clients.map(client => ({
+    ...client,
+    solde: calculateClientBalance(client.id)
+  }))
 }
 
 export const saveClient = (client: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>): Client => {

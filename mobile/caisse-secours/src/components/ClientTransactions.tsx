@@ -84,18 +84,16 @@ export default function ClientTransactions({ client, onBack }: ClientTransaction
               Transactions ({transactions.length})
             </h2>
             {transactions.map(transaction => (
-              <div key={transaction.id} className="transaction-item">
-                <div className="transaction-info">
-                  <h4>
-                    {transaction.sourceDestination}
+              <div key={transaction.id} className="transaction-item" style={{ width: '100%', marginBottom: '1rem' }}>
+                <div style={{ width: '100%' }}>
+                  <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', margin: '0 0 0.25rem 0', color: transaction.type === 'depot' ? '#28a745' : '#dc3545' }}>
+                    {formatAmount(transaction.montant, transaction.type)}
                   </h4>
-                  <p>{formatDate(transaction.createdAt)}</p>
+                  <p style={{ fontSize: '0.9rem', color: '#666', margin: '0 0 0.5rem 0' }}>{formatDate(transaction.createdAt)}</p>
+                  <p style={{ fontSize: '0.8rem', color: '#999', margin: 0 }}>{transaction.sourceDestination}</p>
                   {transaction.description && (
-                    <p style={{ fontStyle: 'italic' }}>{transaction.description}</p>
+                    <p style={{ fontSize: '0.8rem', color: '#999', fontStyle: 'italic', margin: '0.25rem 0 0 0' }}>{transaction.description}</p>
                   )}
-                </div>
-                <div className={`transaction-amount ${transaction.type}`}>
-                  {formatAmount(transaction.montant, transaction.type)}
                 </div>
               </div>
             ))}
@@ -103,9 +101,23 @@ export default function ClientTransactions({ client, onBack }: ClientTransaction
         )}
       </div>
 
-      <button className="fab" onClick={() => setShowAddModal(true)}>
-        +
-      </button>
+      <div style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)' }}>
+        <button 
+          onClick={() => setShowAddModal(true)}
+          style={{
+            backgroundColor: '#007AFF',
+            color: 'white',
+            border: 'none',
+            borderRadius: '25px',
+            padding: '0.75rem 1.5rem',
+            fontSize: '1rem',
+            fontWeight: '600',
+            boxShadow: '0 4px 12px rgba(0, 122, 255, 0.3)'
+          }}
+        >
+          Nouvelle transaction
+        </button>
+      </div>
 
       {showAddModal && (
         <AddTransactionModal
