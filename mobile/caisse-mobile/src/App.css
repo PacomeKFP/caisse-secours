@@ -1,0 +1,371 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: #0a0a0a;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.header {
+  background: #ffffff;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e5e7;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+  color: #007AFF;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  background: #f2f2f7;
+}
+
+.header h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.content {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 100%;
+  width: 100%;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e5e7;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.card:hover {
+  background: #f9f9f9;
+  border-color: #d1d1d6;
+}
+
+.card:active {
+  background: #f2f2f7;
+  transform: scale(0.98);
+}
+
+.card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #1d1d1f;
+}
+
+.card p {
+  color: #86868b;
+  font-size: 0.875rem;
+  margin-bottom: 0.125rem;
+}
+
+.btn {
+  background: #007AFF;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background: #0051D0;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-secondary {
+  background: #8e8e93;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #6d6d70;
+}
+
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  width: 56px;
+  height: 56px;
+  background: #007AFF;
+  border: none;
+  border-radius: 28px;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 300;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+  transition: all 0.15s ease;
+}
+
+.fab:hover {
+  background: #0051D0;
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+
+.fab:active {
+  transform: scale(0.94);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.modal h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #1d1d1f;
+  font-size: 0.9375rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d1d6;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+  background: #ffffff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.form-actions .btn {
+  flex: 1;
+  min-height: 44px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e5e7;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.transaction-info h4 {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #1d1d1f;
+}
+
+.transaction-info p {
+  font-size: 0.8125rem;
+  color: #86868b;
+  margin-bottom: 0.125rem;
+}
+
+.transaction-amount {
+  font-weight: 600;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.transaction-amount.depot {
+  color: #30d158;
+}
+
+.transaction-amount.retrait {
+  color: #ff3b30;
+}
+
+.export-section {
+  background: #f2f2f7;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.export-section h3 {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.date-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.date-inputs input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d1d6;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #ffffff;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  color: #86868b;
+}
+
+.empty-state h3 {
+  margin-bottom: 0.5rem;
+  color: #1d1d1f;
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+.empty-state p {
+  font-size: 0.9375rem;
+}
+
+/* Responsive Design */
+@media (max-width: 390px) {
+  .header {
+    padding: 1rem;
+  }
+  
+  .content {
+    padding: 1rem;
+  }
+  
+  .fab {
+    bottom: 1.5rem;
+    right: 1rem;
+  }
+  
+  .card {
+    padding: 0.875rem 1rem;
+  }
+  
+  .transaction-item {
+    padding: 0.875rem 1rem;
+  }
+  
+  .export-section {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .date-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .modal {
+    padding: 1.25rem;
+  }
+  
+  .content {
+    padding: 0.875rem;
+  }
+}
+
+/* Large screens */
+@media (min-width: 768px) {
+  .app {
+    max-width: 420px;
+    margin: 0 auto;
+    border-left: 1px solid #e5e5e7;
+    border-right: 1px solid #e5e5e7;
+  }
+}
