@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+  <!-- Arrière-plan -->
+  <rect width="200" height="60" fill="#f59e0b" rx="8"/>
+  
+  <!-- Icône coffre/caisse -->
+  <g transform="translate(15, 12)">
+    <!-- Corps du coffre -->
+    <rect x="0" y="8" width="30" height="20" fill="#ffffff" rx="2"/>
+    <!-- Couvercle -->
+    <rect x="0" y="6" width="30" height="6" fill="#e5e7eb" rx="2"/>
+    <!-- Serrure -->
+    <circle cx="25" cy="18" r="3" fill="#374151"/>
+    <rect x="23" y="16" width="4" height="4" fill="#374151" rx="1"/>
+    <!-- Détails -->
+    <rect x="2" y="22" width="26" height="1" fill="#d1d5db"/>
+    <rect x="2" y="24" width="26" height="1" fill="#d1d5db"/>
+  </g>
+  
+  <!-- Texte "CAISSE" -->
+  <text x="55" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff">
+    CAISSE
+  </text>
+  
+  <!-- Texte "SECOURS" -->
+  <text x="55" y="42" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff">
+    SECOURS
+  </text>
+  
+  <!-- Élément décoratif (pièces) -->
+  <g transform="translate(145, 15)">
+    <circle cx="5" cy="5" r="4" fill="#fbbf24" stroke="#ffffff" stroke-width="1"/>
+    <circle cx="15" cy="8" r="3" fill="#fbbf24" stroke="#ffffff" stroke-width="1"/>
+    <circle cx="25" cy="12" r="3.5" fill="#fbbf24" stroke="#ffffff" stroke-width="1"/>
+    <!-- Symboles sur les pièces -->
+    <text x="5" y="8" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#ffffff" text-anchor="middle">₣</text>
+    <text x="15" y="11" font-family="Arial, sans-serif" font-size="5" font-weight="bold" fill="#ffffff" text-anchor="middle">₣</text>
+    <text x="25" y="15" font-family="Arial, sans-serif" font-size="5" font-weight="bold" fill="#ffffff" text-anchor="middle">₣</text>
+  </g>
+  
+  <!-- Ligne décorative -->
+  <line x1="55" y1="30" x2="140" y2="30" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+</svg>

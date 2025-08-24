@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Caisse Secours</string>
-    <string name="title_activity_main">Caisse Secours</string>
+    <string name="app_name">Caisse Secours Collecte</string>
+    <string name="title_activity_main">Caisse Secours Collecte</string>
     <string name="package_name">com.caissesecours.collecte</string>
     <string name="custom_url_scheme">com.caissesecours.collecte</string>
 </resources>

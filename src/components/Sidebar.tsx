@@ -69,7 +69,13 @@ export default function Sidebar() {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-center h-16 px-4 border-b border-gray-200">
-            <h1 className="text-xl font-bold text-gold-600">Caisse Secours</h1>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/logo-caisse-secours.svg" 
+                alt="Caisse Secours" 
+                className="h-8 w-auto"
+              />
+            </div>
           </div>
 
           {/* Navigation */}

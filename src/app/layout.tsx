@@ -6,8 +6,13 @@ import { Toaster } from 'sonner'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Caisse Secours - Gestion',
-  description: 'Application de gestion pour Caisse Secours',
+  title: 'Caisse Secours - Gestion Microfinance',
+  description: 'Application de gestion microfinance pour Caisse Secours - Clients, transactions et prêts',
+  icons: {
+    icon: '/logo-caisse-secours.svg',
+    shortcut: '/logo-caisse-secours.svg',
+    apple: '/logo-caisse-secours.svg',
+  }
 }
 
 export default function RootLayout({
