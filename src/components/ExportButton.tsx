@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Download, FileText, Database } from 'lucide-react'
 import { toast } from 'sonner'
-import { exportToJSON, exportToCSV, formatDataForExport } from '@/lib/utils/exportUtils'
+import { exportToJSON, exportToCSV, formatDataForExport, getRawDataForJSON } from '@/lib/utils/exportUtils'
 
 interface ExportButtonProps {
   data: any[]
@@ -22,12 +22,14 @@ export default function ExportButton({ data, filename, type, disabled = false }:
     }
 
     try {
-      const formattedData = formatDataForExport(data, type)
-      
       if (format === 'json') {
-        exportToJSON(formattedData, filename)
+        // Pour JSON: données brutes interopérables 
+        const rawData = getRawDataForJSON(data)
+        exportToJSON(rawData, filename, type)
         toast.success(`Export JSON réussi: ${data.length} enregistrement(s)`)
       } else {
+        // Pour CSV: données formatées lisibles
+        const formattedData = formatDataForExport(data, type)
         exportToCSV(formattedData, filename)
         toast.success(`Export CSV réussi: ${data.length} enregistrement(s)`)
       }

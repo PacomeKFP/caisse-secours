@@ -37,3 +37,16 @@ export interface ImportClientsData {
     solde?: number
   }>
 }
+
+// Format standard d'interopérabilité mobile ↔ web
+export interface StandardExportFormat {
+  clients?: Client[]
+  transactions?: Transaction[]
+  commissions?: any[]
+  metadata?: {
+    exportDate: string
+    source: 'web' | 'mobile'
+    version: string
+    total: number
+  }
+}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { TransactionService } from '@/lib/services/transactionService'
 import { isAuthenticated } from '@/lib/auth/session'
+import { StandardExportFormat, ImportFormat } from '@/types'
 
 interface BatchTransaction {
   clientId: string
@@ -19,11 +20,29 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { transactions } = body
+    console.log('POST /api/transactions/batch-upload received:', body)
+
+    // Détection automatique du format (nouveau standard ou ancien)
+    let transactions: BatchTransaction[]
+    
+    if (Array.isArray(body)) {
+      // Format ancien: tableau direct
+      transactions = body
+      console.log('Format détecté: ancien (tableau direct)')
+    } else if (body.transactions && Array.isArray(body.transactions)) {
+      // Format nouveau: objet standard avec clé "transactions"
+      transactions = body.transactions
+      console.log('Format détecté: nouveau standard interopérable')
+    } else {
+      return NextResponse.json(
+        { error: 'Format invalide. Attendu: tableau de transactions ou objet {transactions: [...]}' },
+        { status: 400 }
+      )
+    }
 
     if (!Array.isArray(transactions) || transactions.length === 0) {
       return NextResponse.json(
-        { error: 'Le champ "transactions" doit être un tableau non vide' },
+        { error: 'Aucune transaction trouvée dans les données' },
         { status: 400 }
       )
     }

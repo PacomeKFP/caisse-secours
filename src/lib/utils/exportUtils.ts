@@ -1,5 +1,18 @@
-export const exportToJSON = (data: any[], filename: string) => {
-  const jsonData = JSON.stringify(data, null, 2)
+import { StandardExportFormat } from '@/types'
+
+// Export au format standard interopérable
+export const exportToJSON = (data: any[], filename: string, type: 'clients' | 'transactions' | 'commissions') => {
+  const standardFormat: StandardExportFormat = {
+    [type]: data,
+    metadata: {
+      exportDate: new Date().toISOString(),
+      source: 'web' as const,
+      version: '1.0.0',
+      total: data.length
+    }
+  }
+  
+  const jsonData = JSON.stringify(standardFormat, null, 2)
   const blob = new Blob([jsonData], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   
@@ -47,12 +60,12 @@ export const exportToCSV = (data: any[], filename: string) => {
   URL.revokeObjectURL(url)
 }
 
-// Fonction pour formater les données avant export
+// Fonction pour formater les données avant export (CSV uniquement)
 export const formatDataForExport = (data: any[], type: 'clients' | 'transactions' | 'commissions') => {
   return data.map(item => {
     const formatted = { ...item }
     
-    // Formater les dates
+    // Formater les dates pour CSV (lisible)
     if (formatted.createdAt) {
       formatted.createdAt = new Date(formatted.createdAt).toLocaleString('fr-FR')
     }
@@ -60,7 +73,7 @@ export const formatDataForExport = (data: any[], type: 'clients' | 'transactions
       formatted.updatedAt = new Date(formatted.updatedAt).toLocaleString('fr-FR')
     }
     
-    // Formater les montants selon le type
+    // Formater les montants selon le type pour CSV
     if (type === 'clients') {
       if (formatted.totalDepots) formatted.totalDepots = `${formatted.totalDepots.toLocaleString('fr-FR')} FCFA`
       if (formatted.totalRetraits) formatted.totalRetraits = `${formatted.totalRetraits.toLocaleString('fr-FR')} FCFA`
@@ -78,5 +91,23 @@ export const formatDataForExport = (data: any[], type: 'clients' | 'transactions
     }
     
     return formatted
+  })
+}
+
+// Fonction pour obtenir données brutes (sans formatage) pour JSON interopérable
+export const getRawDataForJSON = (data: any[]) => {
+  return data.map(item => {
+    const raw = { ...item }
+    
+    // Conserver dates au format ISO
+    if (raw.createdAt && typeof raw.createdAt === 'string') {
+      raw.createdAt = new Date(raw.createdAt).toISOString()
+    }
+    if (raw.updatedAt && typeof raw.updatedAt === 'string') {
+      raw.updatedAt = new Date(raw.updatedAt).toISOString()
+    }
+    
+    // Conserver montants en nombres pour interopérabilité
+    return raw
   })
 }

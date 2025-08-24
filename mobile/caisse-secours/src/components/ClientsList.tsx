@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import type { Client, ImportClientsData } from '../types'
+import type { Client, ImportClientsData, StandardExportFormat } from '../types'
 import { getClientsWithBalance, saveClient, getTransactionsForExport, updateExportRecord, getExportRecord, importClients } from '../lib/storage'
 import { exportToDocuments, generateFileName, ensureExportDirectory } from '../lib/fileExport'
 import AddClientModal from './AddClientModal'
@@ -30,22 +30,33 @@ export default function ClientsList({ onSelectClient, onAddTransaction }: Client
   }
 
   const handleExport = async (fromDate: string, toDate: string) => {
-    const exportData = getTransactionsForExport(fromDate, toDate)
+    const rawData = getTransactionsForExport(fromDate, toDate)
     
-    if (exportData.transactions.length === 0) {
+    if (rawData.transactions.length === 0) {
       alert('Aucune nouvelle transaction à exporter')
       return
     }
 
+    // Format standard interopérable
+    const standardFormat: StandardExportFormat = {
+      transactions: rawData.transactions,
+      metadata: {
+        exportDate: new Date().toISOString(),
+        source: 'mobile' as const,
+        version: '1.0.0',
+        total: rawData.transactions.length
+      }
+    }
+
     // Exporter avec le nouveau système de fichiers
     const filename = generateFileName('CaisseSecours', 'Transactions')
-    const result = await exportToDocuments(exportData, filename)
+    const result = await exportToDocuments(standardFormat, filename)
     
     if (result.success) {
       // Mettre à jour le record d'export
       updateExportRecord(toDate)
       setShowExportModal(false)
-      alert(`✅ Export réussi !\n\n${exportData.transactions.length} transactions exportées\n\nFichier: ${result.path}`)
+      alert(`✅ Export réussi !\n\n${rawData.transactions.length} transactions exportées\n\nFichier: ${result.path}`)
     } else {
       alert(`❌ Erreur d'export:\n${result.error}`)
     }

@@ -35,3 +35,19 @@ export interface CommissionCalculation {
     commissionTranche: number
   }[]
 }
+
+// Format standard d'interopérabilité pour tous les exports/imports
+export interface StandardExportFormat {
+  clients?: any[]
+  transactions?: any[]
+  commissions?: any[]
+  metadata?: {
+    exportDate: string
+    source: 'web' | 'mobile'
+    version: string
+    total: number
+  }
+}
+
+// Type pour détection automatique du format
+export type ImportFormat = StandardExportFormat | any[]

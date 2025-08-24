@@ -30,19 +30,31 @@ export default function ImportModal({ onImport, onClose }: ImportModalProps) {
       const text = await file.text()
       const data = JSON.parse(text)
       
-      // Validation du format
-      if (!data.clients || !Array.isArray(data.clients)) {
-        alert('Format de fichier invalide. Le fichier doit contenir un tableau "clients".')
+      // Validation format (nouveau standard ou ancien)
+      let clientsData
+      if (data.clients && Array.isArray(data.clients)) {
+        // Format nouveau standard interopérable
+        clientsData = data.clients
+      } else if (Array.isArray(data)) {
+        // Format ancien (tableau direct)
+        clientsData = data
+      } else {
+        alert('Format de fichier invalide. Attendu: {clients: [...]} ou tableau direct.')
         return
       }
-
-      if (data.clients.length === 0) {
+      
+      if (!Array.isArray(clientsData) || clientsData.length === 0) {
         alert('Aucun client trouvé dans le fichier')
         return
       }
+      
+      // Convertir au format attendu par la fonction d'import
+      const importData: ImportClientsData = {
+        clients: clientsData
+      }
 
       // Validation des champs requis
-      const invalidClients = data.clients.filter((client: any) => 
+      const invalidClients = clientsData.filter((client: any) => 
         !client.matricule || !client.nom || !client.telephone
       )
 
@@ -51,7 +63,7 @@ export default function ImportModal({ onImport, onClose }: ImportModalProps) {
         return
       }
 
-      onImport(data)
+      onImport(importData)
 
     } catch (error) {
       alert('Erreur lors de la lecture du fichier: ' + (error instanceof Error ? error.message : 'Format invalide'))

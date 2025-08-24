@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ClientService } from '@/lib/services/clientService'
 import { isAuthenticated } from '@/lib/auth/session'
+import { StandardExportFormat, ImportFormat } from '@/types'
 
 interface BatchClient {
   matricule: string
@@ -17,13 +18,29 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { clients } = body
-
     console.log('POST /api/clients/batch-upload received:', body)
+
+    // Détection automatique du format (nouveau standard ou ancien)
+    let clients: BatchClient[]
+    
+    if (Array.isArray(body)) {
+      // Format ancien: tableau direct
+      clients = body
+      console.log('Format détecté: ancien (tableau direct)')
+    } else if (body.clients && Array.isArray(body.clients)) {
+      // Format nouveau: objet standard avec clé "clients"
+      clients = body.clients
+      console.log('Format détecté: nouveau standard interopérable')
+    } else {
+      return NextResponse.json(
+        { error: 'Format invalide. Attendu: tableau de clients ou objet {clients: [...]}' },
+        { status: 400 }
+      )
+    }
 
     if (!Array.isArray(clients) || clients.length === 0) {
       return NextResponse.json(
-        { error: 'Le champ "clients" doit être un tableau non vide' },
+        { error: 'Aucun client trouvé dans les données' },
         { status: 400 }
       )
     }
