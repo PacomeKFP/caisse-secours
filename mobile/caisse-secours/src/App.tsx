@@ -2,11 +2,15 @@ import { useState } from 'react'
 import ClientsList from './components/ClientsList'
 import ClientTransactions from './components/ClientTransactions'
 import AddTransactionModal from './components/AddTransactionModal'
-import type { Client } from './types'
+import BottomNavigation from './components/BottomNavigation'
+import Dashboard from './components/Dashboard'
+import Synchronization from './components/Synchronization'
+import type { Client, TabType } from './types'
 import { saveTransaction } from './lib/storage'
 import './App.css'
 
 function App() {
+  const [activeTab, setActiveTab] = useState<TabType>('dashboard')
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
   const [showTransactionModal, setShowTransactionModal] = useState(false)
   const [transactionClient, setTransactionClient] = useState<Client | null>(null)
@@ -32,19 +36,36 @@ function App() {
     }
   }
 
+  const renderContent = () => {
+    if (selectedClient) {
+      return (
+        <ClientTransactions
+          client={selectedClient}
+          onBack={() => setSelectedClient(null)}
+        />
+      )
+    }
+
+    switch (activeTab) {
+      case 'dashboard':
+        return <Dashboard />
+      case 'clients':
+        return (
+          <ClientsList
+            onSelectClient={setSelectedClient}
+            onAddTransaction={handleAddTransaction}
+          />
+        )
+      case 'sync':
+        return <Synchronization />
+      default:
+        return <Dashboard />
+    }
+  }
+
   return (
     <div className="app">
-      {!selectedClient ? (
-        <ClientsList 
-          onSelectClient={setSelectedClient}
-          onAddTransaction={handleAddTransaction}
-        />
-      ) : (
-        <ClientTransactions 
-          client={selectedClient} 
-          onBack={() => setSelectedClient(null)} 
-        />
-      )}
+      {renderContent()}
 
       {showTransactionModal && transactionClient && (
         <AddTransactionModal
@@ -54,6 +75,13 @@ function App() {
             setShowTransactionModal(false)
             setTransactionClient(null)
           }}
+        />
+      )}
+
+      {!selectedClient && (
+        <BottomNavigation
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
         />
       )}
     </div>

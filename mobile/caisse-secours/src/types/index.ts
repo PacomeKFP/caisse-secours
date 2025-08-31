@@ -50,3 +50,13 @@ export interface StandardExportFormat {
     total: number
   }
 }
+
+// Types pour la navigation
+export type TabType = 'dashboard' | 'clients' | 'sync'
+
+export interface DashboardStats {
+  totalCollected: number
+  totalTransactions: number
+  totalBalance: number
+  activeClients: number
+}

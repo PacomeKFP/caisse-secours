@@ -174,3 +174,44 @@ export const importClients = (clientsData: Array<{ id?: string; matricule: strin
   
   return { imported, skipped, errors }
 }
+
+// Fonctions pour le dashboard
+export const getTodayStats = () => {
+  const today = new Date().toISOString().split('T')[0]
+  const transactions = getTransactions()
+  
+  const todayTransactions = transactions.filter(t => 
+    t.createdAt.startsWith(today)
+  )
+  
+  const totalCollected = todayTransactions
+    .filter(t => t.type === 'depot')
+    .reduce((sum, t) => sum + t.montant, 0)
+  
+  const totalTransactions = todayTransactions.length
+  
+  return {
+    totalCollected,
+    totalTransactions,
+    todayTransactions
+  }
+}
+
+export const getTotalClientsBalance = () => {
+  const clients = getClientsWithBalance()
+  return clients.reduce((sum, client) => sum + client.solde, 0)
+}
+
+export const getActiveClientsCount = () => {
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+  
+  const transactions = getTransactions()
+  const activeClientIds = new Set(
+    transactions
+      .filter(t => new Date(t.createdAt) > thirtyDaysAgo)
+      .map(t => t.clientId)
+  )
+  
+  return activeClientIds.size
+}

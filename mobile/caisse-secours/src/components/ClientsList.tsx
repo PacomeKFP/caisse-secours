@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
-import type { Client, ImportClientsData, StandardExportFormat } from '../types'
-import { getClientsWithBalance, saveClient, getTransactionsForExport, updateExportRecord, getExportRecord, importClients } from '../lib/storage'
-import { exportToDocuments, generateFileName, ensureExportDirectory } from '../lib/fileExport'
+import type { Client } from '../types'
+import { getClientsWithBalance, saveClient } from '../lib/storage'
 import AddClientModal from './AddClientModal'
-import ExportModal from './ExportModal'
-import ImportModal from './ImportModal'
 
 interface ClientsListProps {
   onSelectClient: (client: Client) => void
@@ -15,64 +12,15 @@ export default function ClientsList({ onSelectClient, onAddTransaction }: Client
   const [clients, setClients] = useState<(Client & { solde: number })[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
-  const [showExportModal, setShowExportModal] = useState(false)
-  const [showImportModal, setShowImportModal] = useState(false)
 
   useEffect(() => {
     setClients(getClientsWithBalance())
-    ensureExportDirectory() // Créer le dossier d'export au démarrage
   }, [])
 
   const handleAddClient = (clientData: { matricule: string; nom: string; telephone: string }) => {
     saveClient(clientData)
     setClients(getClientsWithBalance())
     setShowAddModal(false)
-  }
-
-  const handleExport = async (fromDate: string, toDate: string) => {
-    const rawData = getTransactionsForExport(fromDate, toDate)
-    
-    if (rawData.transactions.length === 0) {
-      alert('Aucune nouvelle transaction à exporter')
-      return
-    }
-
-    // Format standard interopérable
-    const standardFormat: StandardExportFormat = {
-      transactions: rawData.transactions,
-      metadata: {
-        exportDate: new Date().toISOString(),
-        source: 'mobile' as const,
-        version: '1.0.0',
-        total: rawData.transactions.length
-      }
-    }
-
-    // Exporter avec le nouveau système de fichiers
-    const filename = generateFileName('CaisseSecours', 'Transactions')
-    const result = await exportToDocuments(standardFormat, filename)
-    
-    if (result.success) {
-      // Mettre à jour le record d'export
-      updateExportRecord(toDate)
-      setShowExportModal(false)
-      alert(`✅ Export réussi !\n\n${rawData.transactions.length} transactions exportées\n\nFichier: ${result.path}`)
-    } else {
-      alert(`❌ Erreur d'export:\n${result.error}`)
-    }
-  }
-
-  const handleImport = (data: ImportClientsData) => {
-    const result = importClients(data.clients)
-    
-    if (result.errors.length > 0) {
-      alert(`Import terminé avec erreurs:\n- Importés: ${result.imported}\n- Ignorés: ${result.skipped}\n- Erreurs: ${result.errors.length}\n\n${result.errors.slice(0, 5).join('\n')}`)
-    } else {
-      alert(`Import réussi:\n- Importés: ${result.imported}\n- Ignorés (doublons): ${result.skipped}`)
-    }
-    
-    setClients(getClientsWithBalance())
-    setShowImportModal(false)
   }
 
   const filteredClients = clients.filter(client => {
@@ -82,8 +30,6 @@ export default function ClientsList({ onSelectClient, onAddTransaction }: Client
            client.telephone.includes(searchTerm)
   })
 
-  const lastExport = getExportRecord()
-
   return (
     <>
       <div className="header">
@@ -91,23 +37,6 @@ export default function ClientsList({ onSelectClient, onAddTransaction }: Client
       </div>
       
       <div className="content">
-        <div className="export-section">
-          <h3>Import / Export</h3>
-          {lastExport && (
-            <p style={{ fontSize: '0.85rem', color: '#86868b', marginBottom: '1rem' }}>
-              Dernier export: {new Date(lastExport.lastExportDate).toLocaleDateString('fr-FR')}
-            </p>
-          )}
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button className="btn" onClick={() => setShowImportModal(true)}>
-              Importer clients
-            </button>
-            <button className="btn btn-secondary" onClick={() => setShowExportModal(true)}>
-              Exporter transactions
-            </button>
-          </div>
-        </div>
-
         <div style={{ marginBottom: '1rem' }}>
           <input
             type="text"
@@ -184,21 +113,6 @@ export default function ClientsList({ onSelectClient, onAddTransaction }: Client
         <AddClientModal
           onSave={handleAddClient}
           onClose={() => setShowAddModal(false)}
-        />
-      )}
-
-      {showExportModal && (
-        <ExportModal
-          onExport={handleExport}
-          onClose={() => setShowExportModal(false)}
-          lastExportDate={lastExport?.lastExportDate}
-        />
-      )}
-
-      {showImportModal && (
-        <ImportModal
-          onImport={handleImport}
-          onClose={() => setShowImportModal(false)}
         />
       )}
     </>
