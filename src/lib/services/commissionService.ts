@@ -178,8 +178,8 @@ export class CommissionService {
         `)
         
         const transactionStmt = sqliteDb.prepare(`
-          INSERT INTO transactions (id, client_id, type, montant, description, source_destination, created_at)
-          VALUES (?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO transactions (id, client_id, type, montant, description, source_destination, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `)
         
         // Create commission records and corresponding withdrawal transactions
@@ -209,6 +209,7 @@ export class CommissionService {
             calc.commission,
             `Commission prélevée pour ${this.formatMoisAnnee(moisAnnee)}`,
             'COMMISSION_SYSTEM',
+            now,
             now
           )
         }

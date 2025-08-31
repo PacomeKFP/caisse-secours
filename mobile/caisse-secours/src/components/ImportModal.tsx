@@ -28,7 +28,7 @@ export default function ImportModal({ onImport, onClose }: ImportModalProps) {
 
     try {
       const text = await file.text()
-      const data = JSON.parse(text)
+      const data:ImportClientsData = JSON.parse(text)
       
       // Validation format (nouveau standard ou ancien)
       let clientsData
@@ -54,8 +54,8 @@ export default function ImportModal({ onImport, onClose }: ImportModalProps) {
       }
 
       // Validation des champs requis
-      const invalidClients = clientsData.filter((client: any) => 
-        !client.matricule || !client.nom || !client.telephone
+      const invalidClients = data.clients.filter((client) => 
+        !client.id || !client.matricule || !client.nom || !client.telephone
       )
 
       if (invalidClients.length > 0) {

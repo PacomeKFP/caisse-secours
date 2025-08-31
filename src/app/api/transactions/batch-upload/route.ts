@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
 
     // Détection automatique du format (nouveau standard ou ancien)
     let transactions: BatchTransaction[]
+
+    console.log(body)
     
     if (Array.isArray(body)) {
       // Format ancien: tableau direct

@@ -47,6 +47,30 @@ export const commissionConfig = sqliteTable('commission_config', {
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
 })
 
+// Table des prêts
+export const prets = sqliteTable('prets', {
+  id: text('id').primaryKey().$defaultFn(() => createId()),
+  clientId: text('client_id').notNull().references(() => clients.id, { onDelete: 'cascade' }),
+  montant: real('montant').notNull(),
+  montantRestant: real('montant_restant').notNull(), // Calculé automatiquement
+  datePret: text('date_pret').notNull(),
+  statut: text('statut', { enum: ['actif', 'rembourse'] }).default('actif'),
+  description: text('description'),
+  createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
+  updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
+})
+
+// Table des remboursements
+export const remboursements = sqliteTable('remboursements', {
+  id: text('id').primaryKey().$defaultFn(() => createId()),
+  pretId: text('pret_id').notNull().references(() => prets.id, { onDelete: 'cascade' }),
+  montant: real('montant').notNull(),
+  dateRemboursement: text('date_remboursement').notNull(),
+  description: text('description'),
+  createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
+  updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
+})
+
 export type Client = typeof clients.$inferSelect
 export type NewClient = typeof clients.$inferInsert
 export type Transaction = typeof transactions.$inferSelect
@@ -55,3 +79,7 @@ export type Commission = typeof commissions.$inferSelect
 export type NewCommission = typeof commissions.$inferInsert
 export type CommissionConfig = typeof commissionConfig.$inferSelect
 export type NewCommissionConfig = typeof commissionConfig.$inferInsert
+export type Pret = typeof prets.$inferSelect
+export type NewPret = typeof prets.$inferInsert
+export type Remboursement = typeof remboursements.$inferSelect
+export type NewRemboursement = typeof remboursements.$inferInsert

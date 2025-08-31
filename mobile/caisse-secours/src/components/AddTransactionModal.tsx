@@ -15,7 +15,7 @@ export default function AddTransactionModal({ clientName, onSave, onClose }: Add
   const [type, setType] = useState<'depot' | 'retrait'>('depot')
   const [montant, setMontant] = useState('')
   const [description, setDescription] = useState('')
-  const [sourceDestination, setSourceDestination] = useState('')
+  const [sourceDestination, setSourceDestination] = useState('Recette journalière')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,16 +27,12 @@ export default function AddTransactionModal({ clientName, onSave, onClose }: Add
       return
     }
 
-    if (!sourceDestination.trim()) {
-      alert('La source/destination est requise')
-      return
-    }
 
     onSave({
       type,
       montant: amount,
       description: description.trim() || undefined,
-      sourceDestination: sourceDestination.trim()
+      sourceDestination: type === 'depot' ? 'Recette journalière' : 'Retrait espèces'
     })
   }
 
@@ -83,7 +79,7 @@ export default function AddTransactionModal({ clientName, onSave, onClose }: Add
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
-              placeholder="Ex: Épargne mensuelle"
+              placeholder="Ex: Épargne journalière"
               rows={2}
             />
           </div>

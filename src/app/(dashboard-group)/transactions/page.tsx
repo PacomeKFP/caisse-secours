@@ -146,7 +146,7 @@ export default function TransactionsPage() {
       const response = await fetch('/api/transactions/batch-upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transactions: data })
+        body: JSON.stringify(data)
       })
 
       const result = await response.json()
