@@ -37,7 +37,7 @@ export default function ClientsList({ onSelectClient, onAddTransaction }: Client
         <p>Gérer la collecte journalière</p>
       </div>
 
-      <div >
+      <div>
         <div style={{ marginBottom: '1rem' }}>
           <input
             type="text"
