@@ -4,6 +4,7 @@ import { isAuthenticated } from '@/lib/auth/session'
 import { StandardExportFormat, ImportFormat } from '@/types'
 
 interface BatchTransaction {
+  id?: string
   clientId: string
   type: 'depot' | 'retrait'
   montant: number
@@ -86,6 +87,7 @@ export async function POST(request: NextRequest) {
 
         // Créer la transaction
         const newTransaction = await TransactionService.createTransaction({
+          id: transaction.id,
           clientId: transaction.clientId,
           type: transaction.type,
           montant: transaction.montant,
@@ -100,6 +102,15 @@ export async function POST(request: NextRequest) {
         })
 
       } catch (error) {
+        // Gestion spécifique des doublons
+        if (error instanceof Error && error.message?.includes('déjà importée')) {
+          errors.push({
+            index: i,
+            transaction,
+            error: 'Doublon détecté : transaction déjà importée'
+          })
+          continue  // Skip au lieu d'échouer
+        }
         errors.push({
           index: i,
           transaction,

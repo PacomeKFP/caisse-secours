@@ -2,8 +2,11 @@ import { db, clients, transactions, Transaction, NewTransaction } from '@/lib/db
 import { eq, desc, and, gte, lte, sql } from 'drizzle-orm'
 import { ClientService } from './clientService'
 
+// Préfixe pour IDs externes
+const EXTERNAL_ID_PREFIX = "mobile_";
+
 export class TransactionService {
-  static async createTransaction(transactionData: Omit<NewTransaction, 'id' | 'createdAt' | 'updatedAt'>) {
+  static async createTransaction(transactionData: Omit<NewTransaction, 'id' | 'createdAt' | 'updatedAt'> & { id?: string }) {
     try {
       // Check if client exists
       const client = await db
@@ -24,14 +27,25 @@ export class TransactionService {
         }
       }
 
-      // Create transaction (no need to update balance as it's calculated dynamically)
+      // Préparer les données d'insert
+      const insertData: NewTransaction = {
+        ...transactionData,
+        // Si id fourni, préfixer ; sinon, générer CUID2
+        id: transactionData.id ? EXTERNAL_ID_PREFIX + transactionData.id : undefined,
+      };
+
+      // Create transaction
       const newTransaction = await db
         .insert(transactions)
-        .values(transactionData)
+        .values(insertData)
         .returning()
 
       return newTransaction[0]
     } catch (error) {
+      // Gestion spécifique des doublons (unicité violée)
+      if (error instanceof Error && error.message?.includes('UNIQUE constraint failed')) {
+        throw new Error('Transaction déjà importée (doublon détecté)')
+      }
       console.error('Erreur lors de la création de la transaction:', error)
       if (error instanceof Error) {
         throw error
@@ -41,7 +55,7 @@ export class TransactionService {
   }
 
   // Method to create transaction within an existing database transaction
-  static async createTransactionInTx(tx: any, transactionData: Omit<NewTransaction, 'id' | 'createdAt' | 'updatedAt'>) {
+  static async createTransactionInTx(tx: any, transactionData: Omit<NewTransaction, 'id' | 'createdAt' | 'updatedAt'> & { id?: string }) {
     try {
       // Check if client exists
       const client = await tx
@@ -62,14 +76,24 @@ export class TransactionService {
         }
       }
 
+      // Préparer les données d'insert
+      const insertData: NewTransaction = {
+        ...transactionData,
+        id: transactionData.id ? EXTERNAL_ID_PREFIX + transactionData.id : undefined,
+      };
+
       // Create transaction within the transaction
       const newTransaction = await tx
         .insert(transactions)
-        .values(transactionData)
+        .values(insertData)
         .returning()
 
       return newTransaction[0]
     } catch (error) {
+      // Gestion spécifique des doublons (unicité violée)
+      if (error instanceof Error && error.message?.includes('UNIQUE constraint failed')) {
+        throw new Error('Transaction déjà importée (doublon détecté)')
+      }
       console.error('Erreur lors de la création de la transaction:', error)
       throw error
     }

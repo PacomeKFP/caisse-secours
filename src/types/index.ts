@@ -9,6 +9,7 @@ export interface LoginCredentials {
 }
 
 export interface TransactionFormData {
+  id?: string
   clientId: string
   type: 'depot' | 'retrait'
   montant: number
