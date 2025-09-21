@@ -20,6 +20,13 @@
 /built-app/
 /portable-app/
 /single-exe/
+/release/
+
+# Release artifacts
+*.zip
+*.tar.gz
+*.7z
+Caisse-Secours-v*.zip
 
 # Misc
 .DS_Store
