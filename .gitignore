@@ -9,9 +9,17 @@
 # Next.js
 /.next/
 /out/
-/dist-electron/
-# Production
+
+# Production builds
 /build
+/dist-electron/
+/dist-electron-new/
+/dist-final/
+
+# Electron builds & generated files
+/built-app/
+/portable-app/
+/single-exe/
 
 # Misc
 .DS_Store
@@ -39,3 +47,28 @@ database.db-shm
 
 # Drizzle
 /src/lib/db/migrations
+
+# Build artifacts and temporary files
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Electron packaging
+/app/dist/
+/app/build/
+/app/node_modules/
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS specific
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux specific
+*~
