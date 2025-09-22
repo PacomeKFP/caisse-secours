@@ -1,6 +1,6 @@
 {
   "name": "caisse-secours-app",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Application de gestion de caisse secours",
   "author": "PacomeKFP",
   "private": true,
@@ -18,7 +18,7 @@
     "db:reset": "rm -f database.db && npm run db:setup",
     "test:install": "node scripts/test-install.js",
     "electron:dev": "cross-env NODE_ENV=development electron electron/main.js",
-    "build:app": "node scripts/build-app.js",
+    "build:app": "npm install && node scripts/build-app.js",
     "create:portable": "node scripts/create-portable.js",
     "clean": "node scripts/clean.js"
   },
