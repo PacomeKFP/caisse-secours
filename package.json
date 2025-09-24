@@ -19,6 +19,7 @@
     "test:install": "node scripts/test-install.js",
     "electron:dev": "cross-env NODE_ENV=development electron electron/main.js",
     "build:app": "npm install && node scripts/build-app.js",
+    "build:next": "next build",
     "create:portable": "node scripts/create-portable.js",
     "clean": "node scripts/clean.js"
   },
